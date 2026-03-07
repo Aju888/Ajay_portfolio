@@ -1,0 +1,3244 @@
+<!doctype html>
+<html lang="hi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Website Ka Har Element — Deep Guide</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Hind:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #06080f;
+        --surface: #0d1117;
+        --card: #111827;
+        --border: #1c2a3a;
+        --border2: #243447;
+        --text: #dce8f5;
+        --muted: #5a7a99;
+        --dim: #3a5068;
+
+        --html: #e44d26;
+        --css: #2965f1;
+        --js: #f7df1e;
+
+        --c1: #00e5ff;
+        --c2: #ff6d35;
+        --c3: #b46eff;
+        --c4: #2ecc71;
+        --c5: #ffc107;
+        --c6: #ff4e8a;
+        --c7: #00bcd4;
+        --c8: #ff9800;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Hind", sans-serif;
+        font-size: 15px;
+        line-height: 1.75;
+        overflow-x: hidden;
+      }
+
+      /* ── SCROLLBAR ── */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--border2);
+        border-radius: 99px;
+      }
+
+      /* ── SIDEBAR ── */
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 260px;
+        height: 100vh;
+        background: var(--surface);
+        border-right: 1px solid var(--border);
+        overflow-y: auto;
+        padding: 20px 0 40px;
+        z-index: 200;
+        transition: transform 0.3s;
+      }
+      .sidebar-logo {
+        padding: 0 20px 16px;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 12px;
+        font-family: "Syne", sans-serif;
+        font-size: 0.8rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--c1);
+      }
+      .sidebar-logo span {
+        display: block;
+        font-size: 1.15rem;
+        font-weight: 800;
+        letter-spacing: 0;
+        color: var(--text);
+        margin-top: 3px;
+      }
+      .nav-group {
+        margin-bottom: 6px;
+      }
+      .nav-group-title {
+        font-size: 0.68rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--dim);
+        padding: 8px 20px 4px;
+        font-family: "Syne", sans-serif;
+      }
+      .nav-item {
+        display: block;
+        padding: 7px 20px;
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 0.88rem;
+        border-left: 2px solid transparent;
+        transition: all 0.2s;
+        font-family: "Hind", sans-serif;
+      }
+      .nav-item:hover,
+      .nav-item.active {
+        color: var(--text);
+        background: #ffffff08;
+      }
+      .nav-item .dot {
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        margin-right: 9px;
+        vertical-align: middle;
+      }
+
+      /* ── MAIN ── */
+      .main {
+        margin-left: 260px;
+        min-height: 100vh;
+      }
+
+      /* ── HERO ── */
+      .hero {
+        padding: 80px 60px 60px;
+        background:
+          radial-gradient(ellipse 80% 50% at 20% 20%, #00e5ff0a, transparent),
+          radial-gradient(ellipse 60% 40% at 80% 80%, #b46eff08, transparent);
+        border-bottom: 1px solid var(--border);
+        position: relative;
+        overflow: hidden;
+      }
+      .hero::after {
+        content: "</>";
+        position: absolute;
+        right: 60px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 9rem;
+        font-weight: 700;
+        color: #ffffff03;
+        pointer-events: none;
+      }
+      .hero-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #00e5ff12;
+        border: 1px solid #00e5ff25;
+        border-radius: 99px;
+        padding: 5px 16px;
+        font-size: 0.78rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--c1);
+        margin-bottom: 22px;
+        font-family: "Syne", sans-serif;
+      }
+      .hero h1 {
+        font-family: "Syne", sans-serif;
+        font-size: clamp(1.8rem, 4vw, 3.2rem);
+        font-weight: 800;
+        line-height: 1.15;
+        margin-bottom: 16px;
+      }
+      .hero h1 em {
+        font-style: normal;
+        background: linear-gradient(90deg, var(--c1), var(--c3));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .hero p {
+        color: var(--muted);
+        max-width: 560px;
+        font-size: 1rem;
+      }
+
+      /* ── SECTION ── */
+      .section {
+        padding: 50px 60px;
+        border-bottom: 1px solid var(--border);
+        scroll-margin-top: 20px;
+      }
+      .section:last-child {
+        border-bottom: none;
+      }
+
+      .section-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.72rem;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        font-family: "Syne", sans-serif;
+        padding: 4px 14px;
+        border-radius: 99px;
+        margin-bottom: 16px;
+      }
+      .section-title {
+        font-family: "Syne", sans-serif;
+        font-size: 1.6rem;
+        font-weight: 800;
+        margin-bottom: 8px;
+      }
+      .section-desc {
+        color: var(--muted);
+        font-size: 0.95rem;
+        margin-bottom: 28px;
+        max-width: 680px;
+      }
+
+      /* ── CODE BLOCK ── */
+      .code-file {
+        background: var(--surface);
+        border: 1px solid var(--border2);
+        border-radius: 14px;
+        overflow: hidden;
+        margin: 20px 0;
+      }
+      .code-topbar {
+        background: #0a0f18;
+        padding: 11px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--border);
+      }
+      .code-dots {
+        display: flex;
+        gap: 6px;
+      }
+      .code-dots span {
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+      }
+      .code-dots span:nth-child(1) {
+        background: #ff5f57;
+      }
+      .code-dots span:nth-child(2) {
+        background: #febc2e;
+      }
+      .code-dots span:nth-child(3) {
+        background: #28c840;
+      }
+      .code-filename {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.73rem;
+        color: var(--dim);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .badge-html {
+        background: #e44d2618;
+        color: #e44d26;
+        border: 1px solid #e44d2635;
+        padding: 2px 9px;
+        border-radius: 99px;
+        font-size: 0.65rem;
+      }
+      .badge-css {
+        background: #2965f118;
+        color: #79b8ff;
+        border: 1px solid #2965f135;
+        padding: 2px 9px;
+        border-radius: 99px;
+        font-size: 0.65rem;
+      }
+      .badge-js {
+        background: #f7df1e18;
+        color: #f7df1e;
+        border: 1px solid #f7df1e35;
+        padding: 2px 9px;
+        border-radius: 99px;
+        font-size: 0.65rem;
+      }
+
+      .code-body {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+      .code-body.full {
+        grid-template-columns: 1fr;
+      }
+      @media (max-width: 900px) {
+        .code-body {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .code-pane {
+        padding: 22px;
+        overflow-x: auto;
+      }
+      .code-pane + .code-pane {
+        border-left: 1px solid var(--border);
+      }
+      .code-pane-title {
+        font-size: 0.7rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--dim);
+        margin-bottom: 14px;
+        font-family: "Syne", sans-serif;
+      }
+      pre {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.79rem;
+        line-height: 2;
+        white-space: pre;
+      }
+
+      /* syntax */
+      .kw {
+        color: #ff7b72;
+      }
+      .tg {
+        color: #7ee787;
+      }
+      .at {
+        color: #79c0ff;
+      }
+      .vl {
+        color: #a5d6ff;
+      }
+      .st {
+        color: #a8d8a8;
+      }
+      .cm {
+        color: #4a6a84;
+        font-style: italic;
+      }
+      .sl {
+        color: #79c0ff;
+      }
+      .pp {
+        color: #d2a8ff;
+      }
+      .nm {
+        color: #f2cc60;
+      }
+      .fn {
+        color: #d2a8ff;
+      }
+      .ln {
+        color: #2a3f54;
+        user-select: none;
+        margin-right: 14px;
+        font-size: 0.72rem;
+      }
+
+      /* ── EXPLAIN ROWS ── */
+      .explain-list {
+        margin: 4px 0;
+      }
+      .explain-row {
+        display: grid;
+        grid-template-columns: 200px 1fr;
+        gap: 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .explain-row:last-child {
+        border-bottom: none;
+      }
+      .explain-row .tag-col {
+        padding: 11px 16px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.78rem;
+        border-right: 1px solid var(--border);
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        word-break: break-all;
+      }
+      .explain-row .info-col {
+        padding: 11px 18px;
+        font-size: 0.87rem;
+      }
+      .explain-row .info-col strong {
+        color: var(--text);
+        display: block;
+        margin-bottom: 3px;
+      }
+      .explain-row .info-col p {
+        color: var(--muted);
+        font-size: 0.83rem;
+      }
+
+      /* ── WHY BOX ── */
+      .why {
+        border-left: 3px solid;
+        border-radius: 0 10px 10px 0;
+        padding: 14px 18px;
+        margin: 16px 0;
+        font-size: 0.88rem;
+        background: #ffffff04;
+      }
+      .why .why-head {
+        font-size: 0.7rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        font-family: "Syne", sans-serif;
+        margin-bottom: 6px;
+        opacity: 0.7;
+      }
+      .why p {
+        color: var(--muted);
+      }
+      .why strong {
+        color: var(--text);
+      }
+
+      /* ── AGAR NA LIKHE ── */
+      .danger {
+        background: #ff4e8a08;
+        border: 1px solid #ff4e8a25;
+        border-radius: 10px;
+        padding: 14px 18px;
+        margin: 14px 0;
+        font-size: 0.87rem;
+      }
+      .danger .dhead {
+        color: #ff4e8a;
+        font-size: 0.72rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        font-family: "Syne", sans-serif;
+        margin-bottom: 6px;
+      }
+      .danger p {
+        color: var(--muted);
+      }
+
+      /* ── VISUAL DEMO ── */
+      .demo-box {
+        background: var(--surface);
+        border: 1px solid var(--border2);
+        border-radius: 12px;
+        padding: 20px;
+        margin: 16px 0;
+      }
+      .demo-box .demo-label {
+        font-size: 0.7rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--dim);
+        margin-bottom: 14px;
+        font-family: "Syne", sans-serif;
+      }
+
+      /* ── MINI NAV DEMO ── */
+      .mini-browser {
+        background: #0a0f18;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+      }
+      .mini-browser-bar {
+        background: #161b22;
+        padding: 8px 14px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 1px solid var(--border);
+      }
+      .mini-browser-bar .dots {
+        display: flex;
+        gap: 5px;
+      }
+      .mini-browser-bar .dots span {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+      }
+      .mini-browser-bar .dots span:nth-child(1) {
+        background: #ff5f57;
+      }
+      .mini-browser-bar .dots span:nth-child(2) {
+        background: #febc2e;
+      }
+      .mini-browser-bar .dots span:nth-child(3) {
+        background: #28c840;
+      }
+      .url-bar {
+        flex: 1;
+        background: #1c2a3a;
+        border-radius: 5px;
+        padding: 3px 12px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.72rem;
+        color: var(--muted);
+      }
+      .mini-content {
+        padding: 16px;
+      }
+
+      /* demo navbar */
+      .d-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #0d1117;
+        border: 1px solid var(--border2);
+        border-radius: 8px;
+        padding: 12px 20px;
+      }
+      .d-logo {
+        font-family: "Syne", sans-serif;
+        font-weight: 800;
+        color: var(--c1);
+        font-size: 1rem;
+      }
+      .d-links {
+        display: flex;
+        gap: 20px;
+        list-style: none;
+      }
+      .d-links a {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 0.85rem;
+        font-family: "Hind", sans-serif;
+      }
+      .d-links a:hover {
+        color: var(--text);
+      }
+      .d-btn {
+        background: var(--c1);
+        color: #000;
+        padding: 6px 16px;
+        border-radius: 6px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        font-family: "Hind", sans-serif;
+      }
+
+      /* ── INFO GRID ── */
+      .igrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 12px;
+        margin: 16px 0;
+      }
+      .icard {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 16px;
+      }
+      .icard .ico {
+        font-size: 1.4rem;
+        margin-bottom: 8px;
+      }
+      .icard h4 {
+        font-family: "Syne", sans-serif;
+        font-size: 0.9rem;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+      .icard p {
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+
+      /* ── ATTR TABLE ── */
+      .attr-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 14px 0;
+        font-size: 0.84rem;
+      }
+      .attr-table th {
+        background: #0a0f18;
+        padding: 9px 14px;
+        text-align: left;
+        font-family: "Syne", sans-serif;
+        font-size: 0.72rem;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--dim);
+        border-bottom: 1px solid var(--border2);
+      }
+      .attr-table td {
+        padding: 9px 14px;
+        border-bottom: 1px solid var(--border);
+        vertical-align: top;
+      }
+      .attr-table tr:last-child td {
+        border-bottom: none;
+      }
+      .attr-table td:first-child {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.78rem;
+        color: var(--c1);
+      }
+      .attr-table td:nth-child(2) {
+        color: var(--c3);
+      }
+      .attr-table td:last-child {
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+
+      /* ── PILL TAGS ── */
+      .pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+        margin: 12px 0;
+      }
+      .pill {
+        background: var(--surface);
+        border: 1px solid var(--border2);
+        border-radius: 99px;
+        padding: 3px 13px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.75rem;
+        color: var(--text);
+      }
+
+      /* ── STEP CONNECTOR ── */
+      .step-line {
+        display: flex;
+        align-items: stretch;
+        gap: 0;
+        margin: 8px 0;
+      }
+      .step-line .num {
+        width: 32px;
+        min-width: 32px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .step-line .circle {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem;
+        font-weight: 700;
+        font-family: "Syne", sans-serif;
+        flex-shrink: 0;
+      }
+      .step-line .vline {
+        flex: 1;
+        width: 1px;
+        background: var(--border);
+        margin: 3px auto;
+      }
+      .step-line .content {
+        padding: 0 0 20px 14px;
+        flex: 1;
+      }
+      .step-line .content h4 {
+        font-family: "Syne", sans-serif;
+        font-size: 0.95rem;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+      .step-line .content p {
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+      .step-line .content code {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.78rem;
+        background: var(--surface);
+        border: 1px solid var(--border2);
+        border-radius: 4px;
+        padding: 1px 6px;
+        color: var(--c1);
+      }
+
+      /* ── MOBILE TOGGLE ── */
+      .mob-toggle {
+        display: none;
+        position: fixed;
+        top: 14px;
+        left: 14px;
+        z-index: 300;
+        background: var(--card);
+        border: 1px solid var(--border2);
+        border-radius: 8px;
+        padding: 8px 12px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        color: var(--text);
+      }
+      @media (max-width: 768px) {
+        .sidebar {
+          transform: translateX(-100%);
+        }
+        .sidebar.open {
+          transform: translateX(0);
+        }
+        .main {
+          margin-left: 0;
+        }
+        .mob-toggle {
+          display: block;
+        }
+        .section {
+          padding: 40px 20px;
+        }
+        .hero {
+          padding: 70px 20px 40px;
+        }
+        .code-body {
+          grid-template-columns: 1fr !important;
+        }
+        .code-pane + .code-pane {
+          border-left: none;
+          border-top: 1px solid var(--border);
+        }
+        .explain-row {
+          grid-template-columns: 1fr;
+        }
+        .explain-row .tag-col {
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <button
+      class="mob-toggle"
+      onclick="document.querySelector('.sidebar').classList.toggle('open')"
+    >
+      ☰
+    </button>
+
+    <!-- SIDEBAR -->
+    <nav class="sidebar">
+      <div class="sidebar-logo">Deep Guide<span>Website Elements</span></div>
+
+      <div class="nav-group">
+        <div class="nav-group-title">Foundation</div>
+        <a href="#doctype" class="nav-item"
+          ><span class="dot" style="background: #e44d26"></span>DOCTYPE &
+          HTML</a
+        >
+        <a href="#head" class="nav-item"
+          ><span class="dot" style="background: #fbbf24"></span>HEAD Section</a
+        >
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-title">Layout Structure</div>
+        <a href="#header" class="nav-item"
+          ><span class="dot" style="background: #00e5ff"></span>Header Tag</a
+        >
+        <a href="#navbar" class="nav-item"
+          ><span class="dot" style="background: #00e5ff"></span>Navigation
+          Bar</a
+        >
+        <a href="#nav-links" class="nav-item"
+          ><span class="dot" style="background: #00bcd4"></span>Nav Links
+          (ul/li/a)</a
+        >
+        <a href="#hamburger" class="nav-item"
+          ><span class="dot" style="background: #00bcd4"></span>Hamburger
+          Menu</a
+        >
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-title">Page Sections</div>
+        <a href="#hero-sec" class="nav-item"
+          ><span class="dot" style="background: #ff6d35"></span>Hero Section</a
+        >
+        <a href="#about-sec" class="nav-item"
+          ><span class="dot" style="background: #ff9800"></span>About Section</a
+        >
+        <a href="#image-sec" class="nav-item"
+          ><span class="dot" style="background: #2ecc71"></span>Image Section</a
+        >
+        <a href="#cards-sec" class="nav-item"
+          ><span class="dot" style="background: #b46eff"></span>Cards /
+          Services</a
+        >
+        <a href="#table-sec" class="nav-item"
+          ><span class="dot" style="background: #ffc107"></span>Table Section</a
+        >
+        <a href="#form-sec" class="nav-item"
+          ><span class="dot" style="background: #ff4e8a"></span>Form /
+          Contact</a
+        >
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-title">End</div>
+        <a href="#footer-sec" class="nav-item"
+          ><span class="dot" style="background: #5a7a99"></span>Footer
+          Section</a
+        >
+      </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+      <!-- HERO -->
+      <div class="hero">
+        <div class="hero-eyebrow">📖 Line-by-Line Deep Guide</div>
+        <h1>Website Ka <em>Har Element</em><br />Deeply Samjho</h1>
+        <p>
+          Navigation se Footer tak — har tag, har attribute, har line ka reason.
+          Hinglish mein, bilkul clearly.
+        </p>
+      </div>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!--  1. DOCTYPE & HTML                      -->
+      <!-- ═══════════════════════════════════════ -->
+      <section class="section" id="doctype">
+        <div
+          class="section-eyebrow"
+          style="
+            background: #e44d2615;
+            color: #e44d26;
+            border: 1px solid #e44d2630;
+          "
+        >
+          <span>01</span> Foundation
+        </div>
+        <h2 class="section-title">DOCTYPE &amp; HTML Tag</h2>
+        <p class="section-desc">
+          Ye website ka pehla aur sabse zaruri hissa hai. Browser yahan se
+          samajhta hai — "ye kya file hai aur kaise padha jaaye?"
+        </p>
+
+        <div class="code-file">
+          <div class="code-topbar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <div class="code-filename">
+              <span class="badge-html">HTML</span> index.html — Line 1 to 3
+            </div>
+          </div>
+          <div class="code-body full">
+            <div class="code-pane">
+              <pre><span class="ln">1</span><span class="cm">&lt;!-- YE SABSE PEHLI LINE HOTI HAI --&gt;</span>
+<span class="ln">2</span><span class="tg">&lt;!DOCTYPE html&gt;</span>
+
+<span class="ln">3</span><span class="cm">&lt;!-- Root element — poori website iske andar --&gt;</span>
+<span class="ln">4</span><span class="tg">&lt;html</span> <span class="at">lang</span>=<span class="vl">"hi"</span><span class="tg">&gt;</span>
+
+<span class="ln">5</span>  <span class="tg">&lt;head&gt;</span> <span class="cm">... &lt;/head&gt;</span>
+<span class="ln">6</span>  <span class="tg">&lt;body&gt;</span> <span class="cm">... &lt;/body&gt;</span>
+
+<span class="ln">7</span><span class="tg">&lt;/html&gt;</span></pre>
+            </div>
+          </div>
+        </div>
+
+        <div
+          style="
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 20px 0;
+          "
+        >
+          <div class="explain-row">
+            <div class="tag-col" style="color: #e44d26">
+              &lt;!DOCTYPE html&gt;
+            </div>
+            <div class="info-col">
+              <strong>Document Type Declaration</strong>
+              <p>
+                Browser ko batata hai: "Ye HTML5 file hai." Agar ye na ho,
+                browser <em>quirks mode</em> mein chala jaata hai — purane rules
+                follow karta hai, layout toot jaata hai.
+              </p>
+            </div>
+          </div>
+          <div class="explain-row">
+            <div class="tag-col" style="color: #7ee787">
+              &lt;html lang="hi"&gt;
+            </div>
+            <div class="info-col">
+              <strong>Root / Parent Element</strong>
+              <p>
+                Puri website iske andar hoti hai.
+                <code style="font-family: monospace; color: var(--c1)"
+                  >lang="hi"</code
+                >
+                se screen readers (visually impaired ke liye) aur Google
+                samajhta hai ki content Hindi mein hai — SEO ke liye bhi
+                zaroori.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="danger">
+          <div class="dhead">⚠️ Agar DOCTYPE na likha?</div>
+          <p>
+            Browser "Quirks Mode" mein chala jaata hai. CSS layouts galat
+            dikhenge, fonts size alag honge, aur cross-browser compatibility
+            toot jaayegi. Hamesha LINE 1 par likho.
+          </p>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!--  2. HEAD SECTION                        -->
+      <!-- ═══════════════════════════════════════ -->
+      <section class="section" id="head">
+        <div
+          class="section-eyebrow"
+          style="
+            background: #fbbf2415;
+            color: #fbbf24;
+            border: 1px solid #fbbf2430;
+          "
+        >
+          <span>02</span> HEAD Section
+        </div>
+        <h2 class="section-title">
+          &lt;head&gt; — Browser Ke Liye Instructions
+        </h2>
+        <p class="section-desc">
+          User ko &lt;head&gt; nahi dikhta, lekin ye bahut zaroori hai. Isme hum
+          browser ko batate hain — fonts kahan se lao, title kya hai, CSS kahan
+          hai, SEO kya hai.
+        </p>
+
+        <div class="code-file">
+          <div class="code-topbar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <div class="code-filename">
+              <span class="badge-html">HTML</span> index.html — HEAD Section
+              (poora)
+            </div>
+          </div>
+          <div class="code-body full">
+            <div class="code-pane">
+              <pre><span class="tg">&lt;head&gt;</span>
+
+  <span class="cm">/* ── 1. CHARACTER SET ── */</span>
+  <span class="tg">&lt;meta</span> <span class="at">charset</span>=<span class="vl">"UTF-8"</span> <span class="tg">/&gt;</span>
+  <span class="cm">↑ Hindi, Emoji, Special chars sahi dikhenge</span>
+
+  <span class="cm">/* ── 2. VIEWPORT ── */</span>
+  <span class="tg">&lt;meta</span> <span class="at">name</span>=<span class="vl">"viewport"</span>
+        <span class="at">content</span>=<span class="vl">"width=device-width, initial-scale=1.0"</span> <span class="tg">/&gt;</span>
+  <span class="cm">↑ Mobile par zoom-out nahi hoga, sahi size dikhega</span>
+
+  <span class="cm">/* ── 3. TITLE ── */</span>
+  <span class="tg">&lt;title&gt;</span>Rahul Dev | Web Developer Mumbai<span class="tg">&lt;/title&gt;</span>
+  <span class="cm">↑ Browser tab + Google search result mein dikhta hai</span>
+
+  <span class="cm">/* ── 4. SEO META ── */</span>
+  <span class="tg">&lt;meta</span> <span class="at">name</span>=<span class="vl">"description"</span>
+        <span class="at">content</span>=<span class="vl">"React developer, 3 saal ka experience"</span> <span class="tg">/&gt;</span>
+  <span class="cm">↑ Google search mein title ke neeche jo text aata hai</span>
+
+  <span class="cm">/* ── 5. CSS LINK ── */</span>
+  <span class="tg">&lt;link</span> <span class="at">rel</span>=<span class="vl">"stylesheet"</span> <span class="at">href</span>=<span class="vl">"style.css"</span> <span class="tg">/&gt;</span>
+  <span class="cm">↑ External CSS file yahan connect hoti hai</span>
+
+  <span class="cm">/* ── 6. GOOGLE FONTS ── */</span>
+  <span class="tg">&lt;link</span> <span class="at">rel</span>=<span class="vl">"preconnect"</span> <span class="at">href</span>=<span class="vl">"https://fonts.googleapis.com"</span><span class="tg">/&gt;</span>
+  <span class="tg">&lt;link</span> <span class="at">href</span>=<span class="vl">"https://fonts.googleapis.com/css2?family=Poppins"</span>
+        <span class="at">rel</span>=<span class="vl">"stylesheet"</span><span class="tg">/&gt;</span>
+  <span class="cm">↑ Custom fonts Google se load honge</span>
+
+  <span class="cm">/* ── 7. FAVICON ── */</span>
+  <span class="tg">&lt;link</span> <span class="at">rel</span>=<span class="vl">"icon"</span> <span class="at">href</span>=<span class="vl">"favicon.ico"</span> <span class="tg">/&gt;</span>
+  <span class="cm">↑ Browser tab par chhota sa icon</span>
+
+  <span class="cm">/* ── 8. OPEN GRAPH (Social Share) ── */</span>
+  <span class="tg">&lt;meta</span> <span class="at">property</span>=<span class="vl">"og:title"</span> <span class="at">content</span>=<span class="vl">"Rahul Dev"</span> <span class="tg">/&gt;</span>
+  <span class="tg">&lt;meta</span> <span class="at">property</span>=<span class="vl">"og:image"</span> <span class="at">content</span>=<span class="vl">"preview.jpg"</span> <span class="tg">/&gt;</span>
+  <span class="cm">↑ WhatsApp/Facebook par share karo to ye image/title aata hai</span>
+
+<span class="tg">&lt;/head&gt;</span></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="igrid">
+          <div class="icard">
+            <div class="ico">🔤</div>
+            <h4>charset="UTF-8"</h4>
+            <p>
+              Hindi text, emojis, ₹ sign — sab sahi dikhenge. Agar na ho,
+              gibberish characters aayenge: "â€" jaisi cheezein.
+            </p>
+          </div>
+          <div class="icard">
+            <div class="ico">📱</div>
+            <h4>viewport meta</h4>
+            <p>
+              Ye nahi likha to mobile par website bahut choti dikhai degi — zoom
+              out hokar. 2025 mein ye line mandatory hai.
+            </p>
+          </div>
+          <div class="icard">
+            <div class="ico">🔍</div>
+            <h4>title tag</h4>
+            <p>
+              Google is title ko search result mein dikhata hai. 50-60
+              characters mein keyword daalo — SEO rank improve hoga.
+            </p>
+          </div>
+          <div class="icard">
+            <div class="ico">🎨</div>
+            <h4>link rel="stylesheet"</h4>
+            <p>
+              CSS file ko HTML se connect karta hai. Bina is line ke CSS kaam
+              nahi karegi — page unstyled rahega.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!--  3. HEADER TAG                          -->
+      <!-- ═══════════════════════════════════════ -->
+      <section class="section" id="header">
+        <div
+          class="section-eyebrow"
+          style="
+            background: #00e5ff15;
+            color: #00e5ff;
+            border: 1px solid #00e5ff30;
+          "
+        >
+          <span>03</span> Layout Structure
+        </div>
+        <h2 class="section-title">&lt;header&gt; Tag — Page Ka Top Area</h2>
+        <p class="section-desc">
+          &lt;header&gt; ek semantic tag hai jo page ke top section ko define
+          karta hai. Isme logo, navigation, aur search bar hota hai.
+        </p>
+
+        <div class="code-file">
+          <div class="code-topbar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <div class="code-filename">
+              <span class="badge-html">HTML</span> +
+              <span class="badge-css">CSS</span> — Header Structure
+            </div>
+          </div>
+          <div class="code-body">
+            <div class="code-pane">
+              <div class="code-pane-title">HTML</div>
+              <pre><span class="cm">&lt;!-- HEADER TAG: Semantic wrapper --&gt;</span>
+<span class="tg">&lt;header</span> <span class="at">class</span>=<span class="vl">"site-header"</span><span class="tg">&gt;</span>
+
+  <span class="cm">&lt;!-- NAV: Navigation wrapper --&gt;</span>
+  <span class="tg">&lt;nav</span> <span class="at">class</span>=<span class="vl">"navbar"</span><span class="tg">&gt;</span>
+
+    <span class="cm">&lt;!-- LOGO AREA --&gt;</span>
+    <span class="tg">&lt;div</span> <span class="at">class</span>=<span class="vl">"logo"</span><span class="tg">&gt;</span>
+      <span class="tg">&lt;img</span> <span class="at">src</span>=<span class="vl">"logo.svg"</span> <span class="at">alt</span>=<span class="vl">"Brand Logo"</span> <span class="tg">/&gt;</span>
+      <span class="tg">&lt;span&gt;</span>MyBrand<span class="tg">&lt;/span&gt;</span>
+    <span class="tg">&lt;/div&gt;</span>
+
+    <span class="cm">&lt;!-- NAV LINKS --&gt;</span>
+    <span class="tg">&lt;ul</span> <span class="at">class</span>=<span class="vl">"nav-links"</span><span class="tg">&gt;</span>
+      <span class="tg">&lt;li&gt;&lt;a</span> <span class="at">href</span>=<span class="vl">"#home"</span><span class="tg">&gt;</span>Home<span class="tg">&lt;/a&gt;&lt;/li&gt;</span>
+      <span class="tg">&lt;li&gt;&lt;a</span> <span class="at">href</span>=<span class="vl">"#services"</span><span class="tg">&gt;</span>Services<span class="tg">&lt;/a&gt;&lt;/li&gt;</span>
+      <span class="tg">&lt;li&gt;&lt;a</span> <span class="at">href</span>=<span class="vl">"#about"</span><span class="tg">&gt;</span>About<span class="tg">&lt;/a&gt;&lt;/li&gt;</span>
+      <span class="tg">&lt;li&gt;&lt;a</span> <span class="at">href</span>=<span class="vl">"#contact"</span><span class="tg">&gt;</span>Contact<span class="tg">&lt;/a&gt;&lt;/li&gt;</span>
+    <span class="tg">&lt;/ul&gt;</span>
+
+    <span class="cm">&lt;!-- CTA BUTTON --&gt;</span>
+    <span class="tg">&lt;button</span> <span class="at">class</span>=<span class="vl">"cta-btn"</span><span class="tg">&gt;</span>Get Started<span class="tg">&lt;/button&gt;</span>
+
+    <span class="cm">&lt;!-- HAMBURGER (mobile only) --&gt;</span>
+    <span class="tg">&lt;button</span> <span class="at">class</span>=<span class="vl">"hamburger"</span>
+            <span class="at">aria-label</span>=<span class="vl">"Menu Toggle"</span><span class="tg">&gt;</span>
+      <span class="tg">&lt;span&gt;&lt;/span&gt;</span>
+      <span class="tg">&lt;span&gt;&lt;/span&gt;</span>
+      <span class="tg">&lt;span&gt;&lt;/span&gt;</span>
+    <span class="tg">&lt;/button&gt;</span>
+
+  <span class="tg">&lt;/nav&gt;</span>
+<span class="tg">&lt;/header&gt;</span></pre>
+            </div>
+            <div class="code-pane">
+              <div class="code-pane-title">CSS</div>
+              <pre><span class="cm">/* HEADER — Sticky upar rahega scroll par */</span>
+<span class="sl">.site-header</span> {
+  <span class="pp">position</span>: sticky;
+  <span class="cm">/* scroll karo — header upar chipka rahega */</span>
+  <span class="pp">top</span>: <span class="nm">0</span>;
+  <span class="pp">z-index</span>: <span class="nm">1000</span>;
+  <span class="cm">/* saari cheezein header ke neeche */</span>
+  <span class="pp">background</span>: white;
+  <span class="pp">box-shadow</span>: <span class="nm">0 2px 20px</span> rgba(<span class="nm">0,0,0,0.08</span>);
+}
+
+<span class="cm">/* NAVBAR — Logo + Links + Button ek line mein */</span>
+<span class="sl">.navbar</span> {
+  <span class="pp">display</span>: flex;
+  <span class="cm">/* teeno cheezein ek row mein */</span>
+  <span class="pp">align-items</span>: center;
+  <span class="cm">/* vertically center */</span>
+  <span class="pp">justify-content</span>: space-between;
+  <span class="cm">/* logo left, links center, btn right */</span>
+  <span class="pp">padding</span>: <span class="nm">0 80px</span>;
+  <span class="pp">height</span>: <span class="nm">70px</span>;
+  <span class="pp">max-width</span>: <span class="nm">1200px</span>;
+  <span class="pp">margin</span>: <span class="nm">0 auto</span>;
+}
+
+<span class="cm">/* LOGO */</span>
+<span class="sl">.logo</span> {
+  <span class="pp">display</span>: flex;
+  <span class="pp">align-items</span>: center;
+  <span class="pp">gap</span>: <span class="nm">10px</span>;
+  <span class="pp">font-weight</span>: <span class="nm">800</span>;
+  <span class="pp">font-size</span>: <span class="nm">1.2rem</span>;
+  <span class="pp">text-decoration</span>: none;
+  <span class="pp">color</span>: inherit;
+}
+<span class="sl">.logo img</span> {
+  <span class="pp">width</span>: <span class="nm">36px</span>;
+  <span class="pp">height</span>: <span class="nm">36px</span>;
+}
+
+<span class="cm">/* CTA BUTTON */</span>
+<span class="sl">.cta-btn</span> {
+  <span class="pp">background</span>: #<span class="nm">6366f1</span>;
+  <span class="pp">color</span>: white;
+  <span class="pp">padding</span>: <span class="nm">10px 24px</span>;
+  <span class="pp">border</span>: none;
+  <span class="pp">border-radius</span>: <span class="nm">8px</span>;
+  <span class="pp">cursor</span>: pointer;
+  <span class="pp">font-weight</span>: <span class="nm">600</span>;
+  <span class="pp">transition</span>: all <span class="nm">0.2s</span>;
+}
+
+<span class="cm">/* HAMBURGER — mobile par teen lines */</span>
+<span class="sl">.hamburger</span> {
+  <span class="pp">display</span>: none;
+  <span class="cm">/* desktop par chupaao */</span>
+  <span class="pp">flex-direction</span>: column;
+  <span class="pp">gap</span>: <span class="nm">5px</span>;
+  <span class="pp">background</span>: none;
+  <span class="pp">border</span>: none;
+  <span class="pp">cursor</span>: pointer;
+  <span class="pp">padding</span>: <span class="nm">4px</span>;
+}
+<span class="sl">.hamburger span</span> {
+  <span class="pp">width</span>: <span class="nm">24px</span>;
+  <span class="pp">height</span>: <span class="nm">2px</span>;
+  <span class="pp">background</span>: #<span class="nm">333</span>;
+  <span class="pp">border-radius</span>: <span class="nm">2px</span>;
+}
+<span class="cm">/* Mobile par hamburger dikhao */</span>
+<span class="kw">@media</span>(max-width: <span class="nm">768px</span>) {
+  <span class="sl">.hamburger</span> { <span class="pp">display</span>: flex; }
+  <span class="sl">.nav-links</span>  { <span class="pp">display</span>: none; }
+  <span class="sl">.cta-btn</span>    { <span class="pp">display</span>: none; }
+}</pre>
+            </div>
+          </div>
+        </div>
+
+        <div
+          style="
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 20px 0;
+          "
+        >
+          <div class="explain-row">
+            <div class="tag-col" style="color: #7ee787">&lt;header&gt;</div>
+            <div class="info-col">
+              <strong>Semantic HTML5 Tag</strong>
+              <p>
+                Sirf ek &lt;div&gt; bhi use kar sakte the, lekin &lt;header&gt;
+                use karne se Google aur screen readers samajhte hain: "Ye page
+                ka header area hai." SEO aur accessibility dono improve hoti
+                hai.
+              </p>
+            </div>
+          </div>
+          <div class="explain-row">
+            <div class="tag-col" style="color: #7ee787">&lt;nav&gt;</div>
+            <div class="info-col">
+              <strong>Navigation Wrapper</strong>
+              <p>
+                Screen readers is tag ko dhundh ke user ko batate hain: "Yahan
+                navigation links hain." Google bhi is tag ko samajhta hai.
+              </p>
+            </div>
+          </div>
+          <div class="explain-row">
+            <div class="tag-col" style="color: #79c0ff">position: sticky</div>
+            <div class="info-col">
+              <strong>Scroll par chipka rahega</strong>
+              <p>
+                <code style="font-family: monospace; color: var(--c1)"
+                  >fixed</code
+                >
+                se fark ye hai ki sticky pehle normal flow mein rehta hai, phir
+                scroll par upar chipak jaata hai. User ko page ke beech mein bhi
+                navbar milta rehta hai.
+              </p>
+            </div>
+          </div>
+          <div class="explain-row">
+            <div class="tag-col" style="color: #79c0ff">z-index: 1000</div>
+            <div class="info-col">
+              <strong>Sabke Upar Rahega</strong>
+              <p>
+                Agar z-index na ho, to scroll karte waqt content header ke upar
+                aa jaayega. 1000 value se header hamesha baaki sab elements ke
+                upar dikhega.
+              </p>
+            </div>
+          </div>
+          <div class="explain-row">
+            <div class="tag-col" style="color: #79c0ff">
+              justify-content: space-between
+            </div>
+            <div class="info-col">
+              <strong>Logo Left, Button Right</strong>
+              <p>
+                Flexbox ka ye property logo ko left mein aur CTA button ko right
+                mein automatically push kar deta hai. Manually margin nahi dena
+                padta.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live demo -->
+        <div class="demo-box">
+          <div class="demo-label">👁️ Live Preview — Navbar kaisa dikhega</div>
+          <div class="mini-browser">
+            <div class="mini-browser-bar">
+              <div class="dots"><span></span><span></span><span></span></div>
+              <div class="url-bar">https://mybrand.com</div>
+            </div>
+            <div class="mini-content">
+              <div class="d-nav">
+                <div class="d-logo">⚡ MyBrand</div>
+                <ul class="d-links">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">Services</a></li>
+                  <li><a href="#">About</a></li>
+                  <li><a href="#">Contact</a></li>
+                </ul>
+                <button class="d-btn">Get Started</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!--  4. NAV LINKS                           -->
+      <!-- ═══════════════════════════════════════ -->
+      <section class="section" id="nav-links">
+        <div
+          class="section-eyebrow"
+          style="
+            background: #00bcd415;
+            color: #00bcd4;
+            border: 1px solid #00bcd430;
+          "
+        >
+          <span>04</span> Navigation Links
+        </div>
+        <h2 class="section-title">ul / li / a — Nav Links Ki Structure</h2>
+        <p class="section-desc">
+          Navbar ke andar links ka structure ul (unordered list) + li (list
+          item) + a (anchor/link) se banta hai. Ye ek standard pattern hai jo
+          har professional website follow karta hai.
+        </p>
+
+        <div class="code-file">
+          <div class="code-topbar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <div class="code-filename">
+              <span class="badge-html">HTML</span> +
+              <span class="badge-css">CSS</span> — Nav Links Detail
+            </div>
+          </div>
+          <div class="code-body">
+            <div class="code-pane">
+              <div class="code-pane-title">HTML — Har Line Ka Reason</div>
+              <pre><span class="cm">&lt;!-- UL: Unordered List — links ka container --&gt;</span>
+<span class="tg">&lt;ul</span> <span class="at">class</span>=<span class="vl">"nav-links"</span><span class="tg">&gt;</span>
+
+  <span class="cm">&lt;!-- LI: List Item — har ek link ka wrapper --&gt;</span>
+  <span class="tg">&lt;li&gt;</span>
+    <span class="cm">&lt;!-- A: Anchor tag — actual clickable link --&gt;</span>
+    <span class="cm">&lt;!-- href="#home" = same page ka section --&gt;</span>
+    <span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"#home"</span><span class="tg">&gt;</span>Home<span class="tg">&lt;/a&gt;</span>
+  <span class="tg">&lt;/li&gt;</span>
+
+  <span class="tg">&lt;li&gt;</span>
+    <span class="cm">&lt;!-- href="/about.html" = doosra page --&gt;</span>
+    <span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"/about.html"</span><span class="tg">&gt;</span>About<span class="tg">&lt;/a&gt;</span>
+  <span class="tg">&lt;/li&gt;</span>
+
+  <span class="tg">&lt;li&gt;</span>
+    <span class="cm">&lt;!-- Doosri website par jaana --&gt;</span>
+    <span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"https://google.com"</span>
+       <span class="at">target</span>=<span class="vl">"_blank"</span>
+       <span class="cm">↑ Naya tab mein khulega</span>
+       <span class="at">rel</span>=<span class="vl">"noopener noreferrer"</span><span class="tg">&gt;</span>
+       <span class="cm">↑ Security ke liye zaruri</span>
+      Blog
+    <span class="tg">&lt;/a&gt;</span>
+  <span class="tg">&lt;/li&gt;</span>
+
+  <span class="tg">&lt;li&gt;</span>
+    <span class="cm">&lt;!-- Active class — current page highlight --&gt;</span>
+    <span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"#contact"</span>
+       <span class="at">class</span>=<span class="vl">"active"</span><span class="tg">&gt;</span>Contact<span class="tg">&lt;/a&gt;</span>
+  <span class="tg">&lt;/li&gt;</span>
+
+<span class="tg">&lt;/ul&gt;</span></pre>
+            </div>
+            <div class="code-pane">
+              <div class="code-pane-title">CSS — Link Styles</div>
+              <pre><span class="cm">/* UL — List ko horizontal banao */</span>
+<span class="sl">.nav-links</span> {
+  <span class="pp">display</span>: flex;
+  <span class="cm">/* vertical list → horizontal row */</span>
+  <span class="pp">list-style</span>: none;
+  <span class="cm">/* bullet points hatao */</span>
+  <span class="pp">gap</span>: <span class="nm">8px</span>;
+  <span class="pp">align-items</span>: center;
+}
+
+<span class="cm">/* A — Link ka default styling hatao */</span>
+<span class="sl">.nav-links a</span> {
+  <span class="pp">text-decoration</span>: none;
+  <span class="cm">/* underline hatao */</span>
+  <span class="pp">color</span>: #<span class="nm">444</span>;
+  <span class="pp">padding</span>: <span class="nm">8px 14px</span>;
+  <span class="cm">/* click area bada karo */</span>
+  <span class="pp">border-radius</span>: <span class="nm">6px</span>;
+  <span class="pp">font-weight</span>: <span class="nm">500</span>;
+  <span class="pp">font-size</span>: <span class="nm">.95rem</span>;
+  <span class="pp">transition</span>: all <span class="nm">0.2s</span> ease;
+  <span class="cm">/* smooth hover effect */</span>
+  <span class="pp">position</span>: relative;
+}
+
+<span class="cm">/* HOVER STATE */</span>
+<span class="sl">.nav-links a:hover</span> {
+  <span class="pp">color</span>: #<span class="nm">6366f1</span>;
+  <span class="pp">background</span>: #<span class="nm">6366f1</span>10;
+}
+
+<span class="cm">/* ACTIVE — current page */</span>
+<span class="sl">.nav-links a.active</span> {
+  <span class="pp">color</span>: #<span class="nm">6366f1</span>;
+  <span class="pp">font-weight</span>: <span class="nm">600</span>;
+}
+
+<span class="cm">/* Underline animation on hover */</span>
+<span class="sl">.nav-links a::after</span> {
+  <span class="pp">content</span>: <span class="st">''</span>;
+  <span class="pp">position</span>: absolute;
+  <span class="pp">bottom</span>: <span class="nm">0</span>; <span class="pp">left</span>: <span class="nm">50%</span>;
+  <span class="pp">width</span>: <span class="nm">0</span>;
+  <span class="pp">height</span>: <span class="nm">2px</span>;
+  <span class="pp">background</span>: #<span class="nm">6366f1</span>;
+  <span class="pp">transition</span>: all <span class="nm">0.3s</span>;
+  <span class="pp">transform</span>: <span class="fn">translateX</span>(<span class="nm">-50%</span>);
+}
+<span class="sl">.nav-links a:hover::after</span> {
+  <span class="pp">width</span>: <span class="nm">100%</span>;
+  <span class="cm">/* hover par underline grow hogi */</span>
+}</pre>
+            </div>
+          </div>
+        </div>
+
+        <table class="attr-table">
+          <thead>
+            <tr>
+              <th>Attribute</th>
+              <th>Value</th>
+              <th>Kya Karta Hai</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>href="#home"</td>
+              <td>#section-id</td>
+              <td>
+                Same page ke kisi section par jump karta hai (smooth scroll)
+              </td>
+            </tr>
+            <tr>
+              <td>href="/about"</td>
+              <td>/page-name</td>
+              <td>Same website ka doosra page</td>
+            </tr>
+            <tr>
+              <td>href="https://..."</td>
+              <td>full URL</td>
+              <td>Doosri website par jaata hai</td>
+            </tr>
+            <tr>
+              <td>target="_blank"</td>
+              <td>_blank</td>
+              <td>Link naye tab mein khulti hai</td>
+            </tr>
+            <tr>
+              <td>rel="noopener"</td>
+              <td>noopener noreferrer</td>
+              <td>Security — naya tab parent page ko access nahi kar sakta</td>
+            </tr>
+            <tr>
+              <td>class="active"</td>
+              <td>custom class</td>
+              <td>Current page ka link highlight karne ke liye</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="why" style="border-color: var(--c1)">
+          <div class="why-head">🤔 Sirf div use kyon nahi kar sakte?</div>
+          <p>
+            <strong>ul + li</strong> use karne ki wajah: Screen readers
+            tab-by-tab links ko navigate karte hain — keyboard accessibility
+            milti hai. Agar sirf &lt;div&gt; use karo, to keyboard se navigate
+            nahi ho sakta. Google bhi list-based navigation ko zyada samajhta
+            hai.
+          </p>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!--  5. HAMBURGER MENU                      -->
+      <!-- ═══════════════════════════════════════ -->
+      <section class="section" id="hamburger">
+        <div
+          class="section-eyebrow"
+          style="
+            background: #00bcd415;
+            color: #00bcd4;
+            border: 1px solid #00bcd430;
+          "
+        >
+          <span>05</span> Mobile Menu
+        </div>
+        <h2 class="section-title">☰ Hamburger Menu — Mobile Navigation</h2>
+        <p class="section-desc">
+          Mobile screen par sab links nahi aa sakti ek line mein. Hamburger icon
+          (☰) click karne par menu slide karke khulta hai — CSS + JS mila ke
+          banta hai.
+        </p>
+
+        <div class="code-file">
+          <div class="code-topbar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <div class="code-filename">
+              <span class="badge-html">HTML</span> +
+              <span class="badge-css">CSS</span> +
+              <span class="badge-js">JS</span> — Hamburger Menu
+            </div>
+          </div>
+          <div class="code-body full">
+            <div class="code-pane">
+              <pre><span class="cm">/* ── HTML ── */</span>
+<span class="cm">&lt;!-- 3 spans = 3 lines of hamburger icon --&gt;</span>
+<span class="tg">&lt;button</span> <span class="at">class</span>=<span class="vl">"hamburger"</span> <span class="at">id</span>=<span class="vl">"ham-btn"</span>
+        <span class="at">aria-expanded</span>=<span class="vl">"false"</span>
+        <span class="cm">↑ Accessibility: open/close state</span>
+        <span class="at">aria-label</span>=<span class="vl">"Navigation menu"</span><span class="tg">&gt;</span>
+  <span class="tg">&lt;span</span> <span class="at">class</span>=<span class="vl">"line"</span><span class="tg">&gt;&lt;/span&gt;</span>  <span class="cm">&lt;-- Top line</span>
+  <span class="tg">&lt;span</span> <span class="at">class</span>=<span class="vl">"line"</span><span class="tg">&gt;&lt;/span&gt;</span>  <span class="cm">&lt;-- Middle line</span>
+  <span class="tg">&lt;span</span> <span class="at">class</span>=<span class="vl">"line"</span><span class="tg">&gt;&lt;/span&gt;</span>  <span class="cm">&lt;-- Bottom line</span>
+<span class="tg">&lt;/button&gt;</span>
+
+<span class="tg">&lt;ul</span> <span class="at">class</span>=<span class="vl">"nav-links"</span> <span class="at">id</span>=<span class="vl">"nav-menu"</span><span class="tg">&gt;</span>
+  ...links...
+<span class="tg">&lt;/ul&gt;</span>
+
+<span class="cm">/* ── CSS ── */</span>
+<span class="sl">.hamburger .line</span> {
+  <span class="pp">display</span>: block;
+  <span class="pp">width</span>: <span class="nm">25px</span>; <span class="pp">height</span>: <span class="nm">2px</span>;
+  <span class="pp">background</span>: #<span class="nm">333</span>;
+  <span class="pp">border-radius</span>: <span class="nm">2px</span>;
+  <span class="pp">transition</span>: all <span class="nm">0.3s</span> ease;
+  <span class="cm">/* X animation ke liye */</span>
+}
+<span class="cm">/* Jab open ho — teen lines X ban jaati hain */</span>
+<span class="sl">.hamburger.open .line:nth-child(1)</span> {
+  <span class="pp">transform</span>: <span class="fn">translateY</span>(<span class="nm">7px</span>) <span class="fn">rotate</span>(<span class="nm">45deg</span>);
+}
+<span class="sl">.hamburger.open .line:nth-child(2)</span> {
+  <span class="pp">opacity</span>: <span class="nm">0</span>; <span class="cm">/* middle chhup jaati hai */</span>
+}
+<span class="sl">.hamburger.open .line:nth-child(3)</span> {
+  <span class="pp">transform</span>: <span class="fn">translateY</span>(<span class="nm">-7px</span>) <span class="fn">rotate</span>(<span class="nm">-45deg</span>);
+}
+
+<span class="cm">/* Mobile menu — pehle chupaao */</span>
+<span class="kw">@media</span>(max-width: <span class="nm">768px</span>) {
+  <span class="sl">.nav-links</span> {
+    <span class="pp">display</span>: none;
+    <span class="pp">position</span>: absolute;
+    <span class="pp">top</span>: <span class="nm">70px</span>; <span class="pp">left</span>: <span class="nm">0</span>;
+    <span class="pp">width</span>: <span class="nm">100%</span>;
+    <span class="pp">flex-direction</span>: column;
+    <span class="pp">background</span>: white;
+    <span class="pp">padding</span>: <span class="nm">20px</span>;
+    <span class="pp">box-shadow</span>: <span class="nm">0 10px 30px</span> rgba(<span class="nm">0,0,0,0.1</span>);
+  }
+  <span class="sl">.nav-links.open</span> {
+    <span class="pp">display</span>: flex; <span class="cm">/* JS se ye class add hogi */</span>
+  }
+}
+
+<span class="cm">/* ── JAVASCRIPT ── */</span>
+<span class="kw">const</span> hamBtn = document.<span class="fn">getElementById</span>(<span class="st">'ham-btn'</span>);
+<span class="kw">const</span> navMenu = document.<span class="fn">getElementById</span>(<span class="st">'nav-menu'</span>);
+
+hamBtn.<span class="fn">addEventListener</span>(<span class="st">'click'</span>, () => {
+
+  <span class="cm">// 'open' class add/remove karo</span>
+  hamBtn.classList.<span class="fn">toggle</span>(<span class="st">'open'</span>);
+  navMenu.classList.<span class="fn">toggle</span>(<span class="st">'open'</span>);
+
+  <span class="cm">// Accessibility update</span>
+  <span class="kw">const</span> isOpen = navMenu.classList.contains(<span class="st">'open'</span>);
+  hamBtn.<span class="fn">setAttribute</span>(<span class="st">'aria-expanded'</span>, isOpen);
+});
+
+<span class="cm">// Link click par menu band karo</span>
+navMenu.<span class="fn">querySelectorAll</span>(<span class="st">'a'</span>).<span class="fn">forEach</span>(link => {
+  link.<span class="fn">addEventListener</span>(<span class="st">'click'</span>, () => {
+    hamBtn.classList.<span class="fn">remove</span>(<span class="st">'open'</span>);
+    navMenu.classList.<span class="fn">remove</span>(<span class="st">'open'</span>);
+  });
+});</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!--  6. HERO SECTION                        -->
+      <!-- ═══════════════════════════════════════ -->
+      <section class="section" id="hero-sec">
+        <div
+          class="section-eyebrow"
+          style="
+            background: #ff6d3515;
+            color: #ff6d35;
+            border: 1px solid #ff6d3530;
+          "
+        >
+          <span>06</span> Page Sections
+        </div>
+        <h2 class="section-title">🦸 Hero Section — Pehli Nazar</h2>
+        <p class="section-desc">
+          Ye website ka sabse important hissa hai. User jab page kholta hai —
+          pehle 3 seconds mein jo dikhta hai wo HERO section hai. Yahan se user
+          decide karta hai — ruke ya na ruke.
+        </p>
+
+        <div class="code-file">
+          <div class="code-topbar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <div class="code-filename">
+              <span class="badge-html">HTML</span> +
+              <span class="badge-css">CSS</span> — Hero Section Complete
+            </div>
+          </div>
+          <div class="code-body">
+            <div class="code-pane">
+              <div class="code-pane-title">HTML</div>
+              <pre><span class="cm">&lt;!-- SECTION tag: ek thematic block --&gt;</span>
+<span class="tg">&lt;section</span> <span class="at">id</span>=<span class="vl">"home"</span> <span class="at">class</span>=<span class="vl">"hero-section"</span><span class="tg">&gt;</span>
+
+  <span class="cm">&lt;!-- Content container: max-width limit --&gt;</span>
+  <span class="tg">&lt;div</span> <span class="at">class</span>=<span class="vl">"hero-content"</span><span class="tg">&gt;</span>
+
+    <span class="cm">&lt;!-- Small label above heading --&gt;</span>
+    <span class="tg">&lt;span</span> <span class="at">class</span>=<span class="vl">"eyebrow"</span><span class="tg">&gt;</span>
+      👋 Namaste, main hun
+    <span class="tg">&lt;/span&gt;</span>
+
+    <span class="cm">&lt;!-- H1: Sirf EK h1 per page! SEO rule --&gt;</span>
+    <span class="tg">&lt;h1</span> <span class="at">class</span>=<span class="vl">"hero-title"</span><span class="tg">&gt;</span>
+      Rahul Sharma,
+      <span class="cm">&lt;!-- SPAN for colored text --&gt;</span>
+      <span class="tg">&lt;span</span> <span class="at">class</span>=<span class="vl">"highlight"</span><span class="tg">&gt;</span>Web Developer<span class="tg">&lt;/span&gt;</span>
+    <span class="tg">&lt;/h1&gt;</span>
+
+    <span class="cm">&lt;!-- Supporting paragraph --&gt;</span>
+    <span class="tg">&lt;p</span> <span class="at">class</span>=<span class="vl">"hero-desc"</span><span class="tg">&gt;</span>
+      Main beautiful websites banata hun jo
+      business grow karte hain.
+    <span class="tg">&lt;/p&gt;</span>
+
+    <span class="cm">&lt;!-- CTA Buttons row --&gt;</span>
+    <span class="tg">&lt;div</span> <span class="at">class</span>=<span class="vl">"hero-btns"</span><span class="tg">&gt;</span>
+      <span class="cm">&lt;!-- Primary CTA --&gt;</span>
+      <span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"#contact"</span> <span class="at">class</span>=<span class="vl">"btn-primary"</span><span class="tg">&gt;</span>
+        Hire Me
+      <span class="tg">&lt;/a&gt;</span>
+      <span class="cm">&lt;!-- Secondary CTA --&gt;</span>
+      <span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"#portfolio"</span> <span class="at">class</span>=<span class="vl">"btn-secondary"</span><span class="tg">&gt;</span>
+        Mera Kaam Dekho
+      <span class="tg">&lt;/a&gt;</span>
+    <span class="tg">&lt;/div&gt;</span>
+
+    <span class="cm">&lt;!-- Social Proof — trust signal --&gt;</span>
+    <span class="tg">&lt;div</span> <span class="at">class</span>=<span class="vl">"hero-stats"</span><span class="tg">&gt;</span>
+      <span class="tg">&lt;div&gt;&lt;strong&gt;</span>50+<span class="tg">&lt;/strong&gt;&lt;span&gt;</span>Projects<span class="tg">&lt;/span&gt;&lt;/div&gt;</span>
+      <span class="tg">&lt;div&gt;&lt;strong&gt;</span>3 Yrs<span class="tg">&lt;/strong&gt;&lt;span&gt;</span>Experience<span class="tg">&lt;/span&gt;&lt;/div&gt;</span>
+      <span class="tg">&lt;div&gt;&lt;strong&gt;</span>100%<span class="tg">&lt;/strong&gt;&lt;span&gt;</span>Satisfaction<span class="tg">&lt;/span&gt;&lt;/div&gt;</span>
+    <span class="tg">&lt;/div&gt;</span>
+
+  <span class="tg">&lt;/div&gt;</span>
+
+  <span class="cm">&lt;!-- Hero IMAGE side --&gt;</span>
+  <span class="tg">&lt;div</span> <span class="at">class</span>=<span class="vl">"hero-visual"</span><span class="tg">&gt;</span>
+    <span class="tg">&lt;img</span> <span class="at">src</span>=<span class="vl">"developer.png"</span>
+         <span class="at">alt</span>=<span class="vl">"Rahul coding"</span>
+         <span class="at">class</span>=<span class="vl">"hero-img"</span>
+         <span class="at">loading</span>=<span class="vl">"eager"</span><span class="tg">/&gt;</span>
+         <span class="cm">↑ Hero image: eager load (fast!)</span>
+  <span class="tg">&lt;/div&gt;</span>
+
+<span class="tg">&lt;/section&gt;</span></pre>
+            </div>
+            <div class="code-pane">
+              <div class="code-pane-title">CSS</div>
+              <pre><span class="sl">.hero-section</span> {
+  <span class="pp">display</span>: grid;
+  <span class="cm">/* 2 column: text + image */</span>
+  <span class="pp">grid-template-columns</span>: 1fr 1fr;
+  <span class="pp">align-items</span>: center;
+  <span class="pp">min-height</span>: <span class="nm">100vh</span>;
+  <span class="cm">/* puri screen height */</span>
+  <span class="pp">padding</span>: <span class="nm">0 80px</span>;
+  <span class="pp">gap</span>: <span class="nm">60px</span>;
+  <span class="pp">background</span>:
+    <span class="fn">linear-gradient</span>(
+      135deg,
+      #<span class="nm">f0f4ff</span> <span class="nm">0%</span>,
+      #<span class="nm">fdf2ff</span> <span class="nm">100%</span>
+    );
+  <span class="pp">position</span>: relative;
+  <span class="pp">overflow</span>: hidden;
+}
+
+<span class="cm">/* Decorative background circle */</span>
+<span class="sl">.hero-section::before</span> {
+  <span class="pp">content</span>: <span class="st">''</span>;
+  <span class="pp">position</span>: absolute;
+  <span class="pp">top</span>: <span class="nm">-200px</span>;
+  <span class="pp">right</span>: <span class="nm">-200px</span>;
+  <span class="pp">width</span>: <span class="nm">600px</span>;
+  <span class="pp">height</span>: <span class="nm">600px</span>;
+  <span class="pp">border-radius</span>: <span class="nm">50%</span>;
+  <span class="pp">background</span>: <span class="fn">radial-gradient</span>(
+    #<span class="nm">6366f130</span>, transparent
+  );
+  <span class="pp">pointer-events</span>: none;
+}
+
+<span class="sl">.eyebrow</span> {
+  <span class="pp">display</span>: inline-block;
+  <span class="pp">background</span>: #<span class="nm">6366f115</span>;
+  <span class="pp">color</span>: #<span class="nm">6366f1</span>;
+  <span class="pp">padding</span>: <span class="nm">6px 16px</span>;
+  <span class="pp">border-radius</span>: <span class="nm">99px</span>;
+  <span class="pp">font-size</span>: <span class="nm">.85rem</span>;
+  <span class="pp">font-weight</span>: <span class="nm">500</span>;
+  <span class="pp">margin-bottom</span>: <span class="nm">16px</span>;
+}
+
+<span class="sl">.hero-title</span> {
+  <span class="pp">font-size</span>: <span class="fn">clamp</span>(<span class="nm">2rem</span>, <span class="nm">4vw</span>, <span class="nm">3.5rem</span>);
+  <span class="cm">/* Responsive font size! */</span>
+  <span class="pp">line-height</span>: <span class="nm">1.1</span>;
+  <span class="pp">font-weight</span>: <span class="nm">800</span>;
+  <span class="pp">color</span>: #<span class="nm">1e293b</span>;
+  <span class="pp">margin-bottom</span>: <span class="nm">20px</span>;
+}
+
+<span class="sl">.highlight</span> {
+  <span class="cm">/* Gradient text effect */</span>
+  <span class="pp">background</span>: <span class="fn">linear-gradient</span>(
+    90deg, #<span class="nm">6366f1</span>, #<span class="nm">a855f7</span>
+  );
+  <span class="pp">-webkit-background-clip</span>: text;
+  <span class="pp">-webkit-text-fill-color</span>: transparent;
+  <span class="pp">background-clip</span>: text;
+}
+
+<span class="sl">.hero-desc</span> {
+  <span class="pp">font-size</span>: <span class="nm">1.1rem</span>;
+  <span class="pp">color</span>: #<span class="nm">64748b</span>;
+  <span class="pp">max-width</span>: <span class="nm">460px</span>;
+  <span class="pp">margin-bottom</span>: <span class="nm">32px</span>;
+  <span class="pp">line-height</span>: <span class="nm">1.7</span>;
+}
+
+<span class="sl">.hero-btns</span> {
+  <span class="pp">display</span>: flex;
+  <span class="pp">gap</span>: <span class="nm">14px</span>;
+  <span class="pp">flex-wrap</span>: wrap;
+  <span class="pp">margin-bottom</span>: <span class="nm">48px</span>;
+}
+
+<span class="sl">.btn-primary</span> {
+  <span class="pp">background</span>: #<span class="nm">6366f1</span>;
+  <span class="pp">color</span>: white;
+  <span class="pp">padding</span>: <span class="nm">14px 32px</span>;
+  <span class="pp">border-radius</span>: <span class="nm">10px</span>;
+  <span class="pp">text-decoration</span>: none;
+  <span class="pp">font-weight</span>: <span class="nm">600</span>;
+  <span class="pp">transition</span>: all <span class="nm">0.2s</span>;
+  <span class="pp">box-shadow</span>: <span class="nm">0 4px 20px</span> #<span class="nm">6366f140</span>;
+}
+<span class="sl">.btn-primary:hover</span> {
+  <span class="pp">transform</span>: <span class="fn">translateY</span>(<span class="nm">-2px</span>);
+  <span class="pp">box-shadow</span>: <span class="nm">0 8px 30px</span> #<span class="nm">6366f160</span>;
+}
+
+<span class="sl">.btn-secondary</span> {
+  <span class="pp">background</span>: transparent;
+  <span class="pp">color</span>: #<span class="nm">1e293b</span>;
+  <span class="pp">padding</span>: <span class="nm">14px 32px</span>;
+  <span class="pp">border-radius</span>: <span class="nm">10px</span>;
+  <span class="pp">text-decoration</span>: none;
+  <span class="pp">font-weight</span>: <span class="nm">600</span>;
+  <span class="pp">border</span>: <span class="nm">2px</span> solid #<span class="nm">e2e8f0</span>;
+}
+
+<span class="sl">.hero-stats</span> {
+  <span class="pp">display</span>: flex;
+  <span class="pp">gap</span>: <span class="nm">40px</span>;
+}
+<span class="sl">.hero-stats strong</span> {
+  <span class="pp">display</span>: block;
+  <span class="pp">font-size</span>: <span class="nm">1.5rem</span>;
+  <span class="pp">font-weight</span>: <span class="nm">800</span>;
+  <span class="pp">color</span>: #<span class="nm">1e293b</span>;
+}
+<span class="sl">.hero-stats span</span> {
+  <span class="pp">font-size</span>: <span class="nm">.82rem</span>;
+  <span class="pp">color</span>: #<span class="nm">94a3b8</span>;
+}
+
+<span class="sl">.hero-img</span> {
+  <span class="pp">width</span>: <span class="nm">100%</span>;
+  <span class="pp">max-width</span>: <span class="nm">500px</span>;
+  <span class="pp">border-radius</span>: <span class="nm">20px</span>;
+  <span class="pp">animation</span>: float <span class="nm">3s</span> ease-in-out infinite;
+}
+<span class="kw">@keyframes</span> float {
+  <span class="nm">0%, 100%</span> { <span class="pp">transform</span>: <span class="fn">translateY</span>(<span class="nm">0</span>); }
+  <span class="nm">50%</span> { <span class="pp">transform</span>: <span class="fn">translateY</span>(<span class="nm">-15px</span>); }
+  <span class="cm">/* floating animation! */</span>
+}
+
+<span class="cm">/* MOBILE: ek column */</span>
+<span class="kw">@media</span>(max-width: <span class="nm">768px</span>) {
+  <span class="sl">.hero-section</span> {
+    <span class="pp">grid-template-columns</span>: 1fr;
+    <span class="pp">text-align</span>: center;
+    <span class="pp">padding</span>: <span class="nm">80px 20px 60px</span>;
+  }
+  <span class="sl">.hero-visual</span> { <span class="pp">display</span>: none; }
+}</pre>
+            </div>
+          </div>
+        </div>
+
+        <div
+          style="
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 20px 0;
+          "
+        >
+          <div class="explain-row">
+            <div class="tag-col" style="color: #7ee787">
+              &lt;section id="home"&gt;
+            </div>
+            <div class="info-col">
+              <strong>Semantic Section + ID</strong>
+              <p>
+                id="home" isliye diya taaki navbar ka &lt;a href="#home"&gt;
+                yahan jump kar sake. &lt;section&gt; Google ko batata hai ye ek
+                alag content block hai.
+              </p>
+            </div>
+          </div>
+          <div class="explain-row">
+            <div class="tag-col" style="color: #7ee787">
+              &lt;h1&gt; — Sirf Ek!
+            </div>
+            <div class="info-col">
+              <strong>Most Important SEO Rule</strong>
+              <p>
+                Poore page mein sirf EK &lt;h1&gt; hona chahiye. Google ise
+                primary keyword maanta hai. Isme apna main keyword zaroor daalo
+                (jaise: "Web Developer Mumbai").
+              </p>
+            </div>
+          </div>
+          <div class="explain-row">
+            <div class="tag-col" style="color: #79c0ff">
+              clamp(2rem,4vw,3.5rem)
+            </div>
+            <div class="info-col">
+              <strong>Fluid / Responsive Typography</strong>
+              <p>
+                min=2rem, preferred=4vw screen width ka, max=3.5rem. Screen size
+                ke saath font automatically adjust hoga — media queries ki
+                zarurat nahi for font size.
+              </p>
+            </div>
+          </div>
+          <div class="explain-row">
+            <div class="tag-col" style="color: #79c0ff">loading="eager"</div>
+            <div class="info-col">
+              <strong>Hero Image Fast Load</strong>
+              <p>
+                Hero image immediately load ho — warna user blank area dekhega.
+                Baaki images "lazy" rakho — scroll par load honge, page fast
+                rahega.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!--  7. IMAGE SECTION                       -->
+      <!-- ═══════════════════════════════════════ -->
+      <section class="section" id="image-sec">
+        <div
+          class="section-eyebrow"
+          style="
+            background: #2ecc7115;
+            color: #2ecc71;
+            border: 1px solid #2ecc7130;
+          "
+        >
+          <span>07</span> Image Section
+        </div>
+        <h2 class="section-title">🖼️ Images — Sahi Tarike Se Use Karo</h2>
+        <p class="section-desc">
+          Images sirf &lt;img src=""&gt; nahi hoti — sahi attributes, formats,
+          lazy loading, aur responsive images — sab seekhna zaroori hai.
+        </p>
+
+        <div class="code-file">
+          <div class="code-topbar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <div class="code-filename">
+              <span class="badge-html">HTML</span> +
+              <span class="badge-css">CSS</span> — Images Complete Guide
+            </div>
+          </div>
+          <div class="code-body">
+            <div class="code-pane">
+              <div class="code-pane-title">HTML — Har Tarah Ki Image</div>
+              <pre><span class="cm">&lt;!-- ── 1. BASIC IMAGE ── --&gt;</span>
+<span class="tg">&lt;img</span>
+  <span class="at">src</span>=<span class="vl">"photo.jpg"</span>
+  <span class="cm">↑ Image file ka path</span>
+  <span class="at">alt</span>=<span class="vl">"Rahul ka photo"</span>
+  <span class="cm">↑ ZARURI! Screen reader + Google</span>
+  <span class="at">width</span>=<span class="vl">"400"</span>
+  <span class="cm">↑ Layout shift rokta hai</span>
+  <span class="at">height</span>=<span class="vl">"300"</span>
+  <span class="cm">↑ Browser space reserve karta hai</span>
+  <span class="at">loading</span>=<span class="vl">"lazy"</span>
+  <span class="cm">↑ Scroll par load — page fast!</span>
+<span class="tg">/&gt;</span>
+
+<span class="cm">&lt;!-- ── 2. FIGURE + FIGCAPTION ── --&gt;</span>
+<span class="cm">&lt;!-- Image + caption dono ek unit --&gt;</span>
+<span class="tg">&lt;figure</span> <span class="at">class</span>=<span class="vl">"portfolio-item"</span><span class="tg">&gt;</span>
+  <span class="tg">&lt;img</span> <span class="at">src</span>=<span class="vl">"project1.jpg"</span>
+       <span class="at">alt</span>=<span class="vl">"E-commerce website screenshot"</span>
+       <span class="at">loading</span>=<span class="vl">"lazy"</span> <span class="tg">/&gt;</span>
+  <span class="tg">&lt;figcaption&gt;</span>
+    E-Commerce Project — React + Node
+  <span class="tg">&lt;/figcaption&gt;</span>
+<span class="tg">&lt;/figure&gt;</span>
+
+<span class="cm">&lt;!-- ── 3. RESPONSIVE IMAGE (PICTURE) ── --&gt;</span>
+<span class="cm">&lt;!-- Different image for different screen --&gt;</span>
+<span class="tg">&lt;picture&gt;</span>
+  <span class="cm">&lt;!-- Desktop: badi image --&gt;</span>
+  <span class="tg">&lt;source</span>
+    <span class="at">media</span>=<span class="vl">"(min-width: 1024px)"</span>
+    <span class="at">srcset</span>=<span class="vl">"hero-large.webp"</span>
+    <span class="at">type</span>=<span class="vl">"image/webp"</span> <span class="tg">/&gt;</span>
+  <span class="cm">&lt;!-- Mobile: choti image --&gt;</span>
+  <span class="tg">&lt;source</span>
+    <span class="at">media</span>=<span class="vl">"(max-width: 768px)"</span>
+    <span class="at">srcset</span>=<span class="vl">"hero-mobile.webp"</span>
+    <span class="at">type</span>=<span class="vl">"image/webp"</span> <span class="tg">/&gt;</span>
+  <span class="cm">&lt;!-- Fallback (purane browsers) --&gt;</span>
+  <span class="tg">&lt;img</span> <span class="at">src</span>=<span class="vl">"hero.jpg"</span>
+       <span class="at">alt</span>=<span class="vl">"Hero image"</span> <span class="tg">/&gt;</span>
+<span class="tg">&lt;/picture&gt;</span>
+
+<span class="cm">&lt;!-- ── 4. BACKGROUND IMAGE (CSS) ── --&gt;</span>
+<span class="cm">&lt;!-- Image decorative ho to CSS use karo --&gt;</span>
+<span class="tg">&lt;div</span> <span class="at">class</span>=<span class="vl">"hero-bg"</span><span class="tg">&gt;</span>
+  <span class="cm">&lt;!-- Content yahan --&gt;</span>
+<span class="tg">&lt;/div&gt;</span></pre>
+            </div>
+            <div class="code-pane">
+              <div class="code-pane-title">CSS — Image Styling</div>
+              <pre><span class="cm">/* ── RESPONSIVE IMAGE ── */</span>
+<span class="sl">img</span> {
+  <span class="pp">max-width</span>: <span class="nm">100%</span>;
+  <span class="cm">/* Kabhi container se badi na ho */</span>
+  <span class="pp">height</span>: auto;
+  <span class="cm">/* Aspect ratio maintain karo */</span>
+  <span class="pp">display</span>: block;
+  <span class="cm">/* img inline hoti hai by default */</span>
+}
+
+<span class="cm">/* ── PORTFOLIO GRID ── */</span>
+<span class="sl">.portfolio-grid</span> {
+  <span class="pp">display</span>: grid;
+  <span class="pp">grid-template-columns</span>:
+    repeat(auto-fill, minmax(<span class="nm">280px</span>, 1fr));
+  <span class="cm">/* Auto-responsive grid! */</span>
+  <span class="pp">gap</span>: <span class="nm">24px</span>;
+}
+
+<span class="cm">/* ── FIGURE CARD ── */</span>
+<span class="sl">.portfolio-item</span> {
+  <span class="pp">border-radius</span>: <span class="nm">12px</span>;
+  <span class="pp">overflow</span>: hidden;
+  <span class="cm">/* Image corners cut hongi */</span>
+  <span class="pp">background</span>: white;
+  <span class="pp">box-shadow</span>: <span class="nm">0 4px 20px</span> rgba(<span class="nm">0,0,0,.08</span>);
+  <span class="pp">transition</span>: transform <span class="nm">0.3s</span>;
+}
+<span class="sl">.portfolio-item:hover</span> {
+  <span class="pp">transform</span>: <span class="fn">translateY</span>(<span class="nm">-6px</span>);
+  <span class="cm">/* Hover par card utha */</span>
+}
+
+<span class="sl">.portfolio-item img</span> {
+  <span class="pp">width</span>: <span class="nm">100%</span>;
+  <span class="pp">height</span>: <span class="nm">200px</span>;
+  <span class="pp">object-fit</span>: cover;
+  <span class="cm">/* Image crop ho, stretch na ho */</span>
+  <span class="pp">object-position</span>: top;
+  <span class="cm">/* Top se crop hogi */</span>
+}
+
+<span class="sl">figcaption</span> {
+  <span class="pp">padding</span>: <span class="nm">14px 16px</span>;
+  <span class="pp">font-size</span>: <span class="nm">.9rem</span>;
+  <span class="pp">color</span>: #<span class="nm">475569</span>;
+  <span class="pp">font-weight</span>: <span class="nm">500</span>;
+}
+
+<span class="cm">/* ── BACKGROUND IMAGE ── */</span>
+<span class="sl">.hero-bg</span> {
+  <span class="pp">background-image</span>: <span class="fn">url</span>(<span class="st">'hero-bg.jpg'</span>);
+  <span class="pp">background-size</span>: cover;
+  <span class="cm">/* Pura div bharo */</span>
+  <span class="pp">background-position</span>: center;
+  <span class="cm">/* Center mein crop </span>
+  <span class="pp">background-repeat</span>: no-repeat;
+  <span class="cm">/* Repeat mat karo */</span>
+
+  <span class="cm">/* Overlay for text readability */</span>
+  <span class="pp">position</span>: relative;
+}
+<span class="sl">.hero-bg::before</span> {
+  <span class="pp">content</span>: <span class="st">''</span>;
+  <span class="pp">position</span>: absolute;
+  <span class="pp">inset</span>: <span class="nm">0</span>;
+  <span class="pp">background</span>: rgba(<span class="nm">0,0,0,0.5</span>);
+  <span class="cm">/* Dark overlay */</span>
+}
+
+<span class="cm">/* ── IMAGE HOVER ZOOM ── */</span>
+<span class="sl">.img-zoom-wrap</span> {
+  <span class="pp">overflow</span>: hidden;
+  <span class="pp">border-radius</span>: <span class="nm">12px</span>;
+}
+<span class="sl">.img-zoom-wrap img</span> {
+  <span class="pp">transition</span>: transform <span class="nm">0.4s</span>;
+}
+<span class="sl">.img-zoom-wrap:hover img</span> {
+  <span class="pp">transform</span>: <span class="fn">scale</span>(<span class="nm">1.05</span>);
+  <span class="cm">/* Hover par zoom-in! */</span>
+}</pre>
+            </div>
+          </div>
+        </div>
+
+        <table class="attr-table">
+          <thead>
+            <tr>
+              <th>Attribute/Property</th>
+              <th>Value</th>
+              <th>Kya Karta Hai</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>alt=""</td>
+              <td>Description</td>
+              <td>
+                Screen readers ke liye + Google Image Search mein rank karta
+                hai. KABHI mat bhoolna.
+              </td>
+            </tr>
+            <tr>
+              <td>loading="lazy"</td>
+              <td>lazy / eager</td>
+              <td>
+                lazy = scroll par load, eager = immediately load. Hero image =
+                eager, baki = lazy.
+              </td>
+            </tr>
+            <tr>
+              <td>object-fit: cover</td>
+              <td>cover/contain/fill</td>
+              <td>
+                cover = aspect ratio rakh ke fill karo. Container ke andar sahi
+                dikhegi, stretch nahi hogi.
+              </td>
+            </tr>
+            <tr>
+              <td>width/height attributes</td>
+              <td>pixels</td>
+              <td>
+                Browser pehle se space reserve karta hai — Cumulative Layout
+                Shift (CLS) nahi hota.
+              </td>
+            </tr>
+            <tr>
+              <td>.webp format</td>
+              <td>image type</td>
+              <td>
+                WebP format JPG se 25-30% chhota hota hai. Same quality, fast
+                loading.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!--  8. CARDS SECTION                       -->
+      <!-- ═══════════════════════════════════════ -->
+      <section class="section" id="cards-sec">
+        <div
+          class="section-eyebrow"
+          style="
+            background: #b46eff15;
+            color: #b46eff;
+            border: 1px solid #b46eff30;
+          "
+        >
+          <span>08</span> Cards / Services
+        </div>
+        <h2 class="section-title">🃏 Cards / Services Section</h2>
+        <p class="section-desc">
+          Services, portfolio, team, features — ye sab card pattern mein dikhate
+          hain. Ek card ka structure aur CSS Grid se responsive layout.
+        </p>
+
+        <div class="code-file">
+          <div class="code-topbar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <div class="code-filename">
+              <span class="badge-html">HTML</span> +
+              <span class="badge-css">CSS</span> — Cards Grid
+            </div>
+          </div>
+          <div class="code-body">
+            <div class="code-pane">
+              <div class="code-pane-title">HTML</div>
+              <pre><span class="tg">&lt;section</span> <span class="at">id</span>=<span class="vl">"services"</span><span class="tg">&gt;</span>
+
+  <span class="cm">&lt;!-- Section Heading --&gt;</span>
+  <span class="tg">&lt;div</span> <span class="at">class</span>=<span class="vl">"section-header"</span><span class="tg">&gt;</span>
+    <span class="tg">&lt;span</span> <span class="at">class</span>=<span class="vl">"label"</span><span class="tg">&gt;</span>Meri Services<span class="tg">&lt;/span&gt;</span>
+    <span class="cm">&lt;!-- h2 — h1 ke baad dusra heading --&gt;</span>
+    <span class="tg">&lt;h2&gt;</span>Main Kya Karta Hun?<span class="tg">&lt;/h2&gt;</span>
+    <span class="tg">&lt;p&gt;</span>3 saal ke experience ke saath...<span class="tg">&lt;/p&gt;</span>
+  <span class="tg">&lt;/div&gt;</span>
+
+  <span class="cm">&lt;!-- Cards Grid Container --&gt;</span>
+  <span class="tg">&lt;div</span> <span class="at">class</span>=<span class="vl">"cards-grid"</span><span class="tg">&gt;</span>
+
+    <span class="cm">&lt;!-- ISKA CARD BAAR BAAR REPEAT HOGA --&gt;</span>
+    <span class="tg">&lt;article</span> <span class="at">class</span>=<span class="vl">"service-card"</span><span class="tg">&gt;</span>
+      <span class="cm">&lt;!-- ARTICLE: standalone content unit --&gt;</span>
+
+      <span class="cm">&lt;!-- Icon area --&gt;</span>
+      <span class="tg">&lt;div</span> <span class="at">class</span>=<span class="vl">"card-icon"</span><span class="tg">&gt;</span>
+        <span class="tg">&lt;span</span> <span class="at">aria-hidden</span>=<span class="vl">"true"</span><span class="tg">&gt;</span>💻<span class="tg">&lt;/span&gt;</span>
+        <span class="cm">↑ aria-hidden: icon decorative hai</span>
+      <span class="tg">&lt;/div&gt;</span>
+
+      <span class="cm">&lt;!-- Card content --&gt;</span>
+      <span class="tg">&lt;h3&gt;</span>Web Development<span class="tg">&lt;/h3&gt;</span>
+      <span class="cm">↑ h3 = h2 ke andar ka heading</span>
+      <span class="tg">&lt;p&gt;</span>
+        Modern, fast aur responsive
+        websites banata hun.
+      <span class="tg">&lt;/p&gt;</span>
+
+      <span class="cm">&lt;!-- Skills list --&gt;</span>
+      <span class="tg">&lt;ul</span> <span class="at">class</span>=<span class="vl">"skill-tags"</span><span class="tg">&gt;</span>
+        <span class="tg">&lt;li&gt;</span>React<span class="tg">&lt;/li&gt;</span>
+        <span class="tg">&lt;li&gt;</span>Next.js<span class="tg">&lt;/li&gt;</span>
+        <span class="tg">&lt;li&gt;</span>TypeScript<span class="tg">&lt;/li&gt;</span>
+      <span class="tg">&lt;/ul&gt;</span>
+
+      <span class="cm">&lt;!-- Card link --&gt;</span>
+      <span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"#contact"</span>
+         <span class="at">class</span>=<span class="vl">"card-link"</span><span class="tg">&gt;</span>
+        Baat Karte Hain →
+      <span class="tg">&lt;/a&gt;</span>
+
+    <span class="tg">&lt;/article&gt;</span>
+
+    <span class="cm">&lt;!-- Repeat karo 2-3 baar --&gt;</span>
+    <span class="tg">&lt;article</span> <span class="at">class</span>=<span class="vl">"service-card featured"</span><span class="tg">&gt;</span>
+      <span class="cm">↑ featured class = highlight card</span>
+      ...
+    <span class="tg">&lt;/article&gt;</span>
+
+  <span class="tg">&lt;/div&gt;</span>
+<span class="tg">&lt;/section&gt;</span></pre>
+            </div>
+            <div class="code-pane">
+              <div class="code-pane-title">CSS</div>
+              <pre><span class="cm">/* GRID — Auto responsive! */</span>
+<span class="sl">.cards-grid</span> {
+  <span class="pp">display</span>: grid;
+  <span class="pp">grid-template-columns</span>:
+    repeat(auto-fit, minmax(<span class="nm">280px</span>, 1fr));
+  <span class="cm">/* 280px se chota nahi hoga */</span>
+  <span class="cm">/* Screen ke hisaab se columns adjust */</span>
+  <span class="pp">gap</span>: <span class="nm">24px</span>;
+  <span class="pp">padding</span>: <span class="nm">40px 0</span>;
+}
+
+<span class="cm">/* CARD BASE */</span>
+<span class="sl">.service-card</span> {
+  <span class="pp">background</span>: white;
+  <span class="pp">border</span>: <span class="nm">1px</span> solid #<span class="nm">e2e8f0</span>;
+  <span class="pp">border-radius</span>: <span class="nm">16px</span>;
+  <span class="pp">padding</span>: <span class="nm">32px</span>;
+  <span class="pp">display</span>: flex;
+  <span class="pp">flex-direction</span>: column;
+  <span class="cm">/* Vertical stack */</span>
+  <span class="pp">gap</span>: <span class="nm">16px</span>;
+  <span class="pp">transition</span>: all <span class="nm">0.3s</span>;
+  <span class="pp">cursor</span>: pointer;
+  <span class="pp">position</span>: relative;
+  <span class="pp">overflow</span>: hidden;
+}
+
+<span class="cm">/* HOVER EFFECT */</span>
+<span class="sl">.service-card:hover</span> {
+  <span class="pp">transform</span>: <span class="fn">translateY</span>(<span class="nm">-8px</span>);
+  <span class="pp">box-shadow</span>: <span class="nm">0 20px 60px</span>
+    rgba(<span class="nm">99,102,241,0.15</span>);
+  <span class="pp">border-color</span>: #<span class="nm">6366f1</span>;
+}
+
+<span class="cm">/* Top color line on hover */</span>
+<span class="sl">.service-card::before</span> {
+  <span class="pp">content</span>: <span class="st">''</span>;
+  <span class="pp">position</span>: absolute;
+  <span class="pp">top</span>: <span class="nm">0</span>; <span class="pp">left</span>: <span class="nm">0</span>;
+  <span class="pp">right</span>: <span class="nm">0</span>; <span class="pp">height</span>: <span class="nm">3px</span>;
+  <span class="pp">background</span>: <span class="fn">linear-gradient</span>(
+    90deg, #<span class="nm">6366f1</span>, #<span class="nm">a855f7</span>
+  );
+  <span class="pp">transform</span>: <span class="fn">scaleX</span>(<span class="nm">0</span>);
+  <span class="pp">transition</span>: transform <span class="nm">0.3s</span>;
+}
+<span class="sl">.service-card:hover::before</span> {
+  <span class="pp">transform</span>: <span class="fn">scaleX</span>(<span class="nm">1</span>);
+  <span class="cm">/* Hover par top line appear */</span>
+}
+
+<span class="cm">/* ICON */</span>
+<span class="sl">.card-icon</span> {
+  <span class="pp">width</span>: <span class="nm">56px</span>; <span class="pp">height</span>: <span class="nm">56px</span>;
+  <span class="pp">background</span>: #<span class="nm">6366f110</span>;
+  <span class="pp">border-radius</span>: <span class="nm">14px</span>;
+  <span class="pp">display</span>: flex;
+  <span class="pp">align-items</span>: center;
+  <span class="pp">justify-content</span>: center;
+  <span class="pp">font-size</span>: <span class="nm">1.6rem</span>;
+}
+
+<span class="cm">/* SKILL TAGS */</span>
+<span class="sl">.skill-tags</span> {
+  <span class="pp">display</span>: flex;
+  <span class="pp">flex-wrap</span>: wrap;
+  <span class="pp">gap</span>: <span class="nm">8px</span>;
+  <span class="pp">list-style</span>: none;
+}
+<span class="sl">.skill-tags li</span> {
+  <span class="pp">background</span>: #<span class="nm">f1f5f9</span>;
+  <span class="pp">padding</span>: <span class="nm">4px 12px</span>;
+  <span class="pp">border-radius</span>: <span class="nm">99px</span>;
+  <span class="pp">font-size</span>: <span class="nm">.78rem</span>;
+  <span class="pp">color</span>: #<span class="nm">475569</span>;
+  <span class="pp">font-weight</span>: <span class="nm">500</span>;
+}
+
+<span class="cm">/* FEATURED CARD */</span>
+<span class="sl">.service-card.featured</span> {
+  <span class="pp">background</span>:
+    <span class="fn">linear-gradient</span>(135deg, #<span class="nm">6366f1</span>, #<span class="nm">a855f7</span>);
+  <span class="pp">color</span>: white;
+  <span class="pp">border</span>: none;
+}
+<span class="sl">.service-card.featured h3</span>,
+<span class="sl">.service-card.featured p</span> {
+  <span class="pp">color</span>: white;
+}
+
+<span class="cm">/* CARD LINK */</span>
+<span class="sl">.card-link</span> {
+  <span class="pp">color</span>: #<span class="nm">6366f1</span>;
+  <span class="pp">text-decoration</span>: none;
+  <span class="pp">font-weight</span>: <span class="nm">600</span>;
+  <span class="pp">font-size</span>: <span class="nm">.9rem</span>;
+  <span class="pp">margin-top</span>: auto;
+  <span class="cm">/* Push to bottom */</span>
+  <span class="pp">display</span>: inline-flex;
+  <span class="pp">align-items</span>: center;
+  <span class="pp">gap</span>: <span class="nm">4px</span>;
+  <span class="pp">transition</span>: gap <span class="nm">0.2s</span>;
+}
+<span class="sl">.card-link:hover</span> {
+  <span class="pp">gap</span>: <span class="nm">10px</span>;
+  <span class="cm">/* Arrow aage bhadega */</span>
+}</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="why" style="border-color: var(--c3)">
+          <div class="why-head">🤔 article vs div — Kya fark hai?</div>
+          <p>
+            <strong>&lt;article&gt;</strong> tab use karo jab content
+            independently meaningful ho — jaise har card apna ek unit ho. Google
+            aur screen readers ise "standalone content" maante hain. Blog post,
+            product card, team member = &lt;article&gt; use karo.
+          </p>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!--  9. TABLE                               -->
+      <!-- ═══════════════════════════════════════ -->
+      <section class="section" id="table-sec">
+        <div
+          class="section-eyebrow"
+          style="
+            background: #ffc10715;
+            color: #ffc107;
+            border: 1px solid #ffc10730;
+          "
+        >
+          <span>09</span> Table
+        </div>
+        <h2 class="section-title">📊 Table — Data Ko Table Mein Dikhao</h2>
+        <p class="section-desc">
+          Pricing, comparison, data — ye sab table mein best dikhta hai. HTML
+          table ka poora structure aur CSS se beautiful banana.
+        </p>
+
+        <div class="code-file">
+          <div class="code-topbar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <div class="code-filename">
+              <span class="badge-html">HTML</span> +
+              <span class="badge-css">CSS</span> — Complete Table
+            </div>
+          </div>
+          <div class="code-body">
+            <div class="code-pane">
+              <div class="code-pane-title">HTML — Table Structure</div>
+              <pre><span class="cm">&lt;!-- TABLE: data tabular hai to hi use karo --&gt;</span>
+<span class="tg">&lt;div</span> <span class="at">class</span>=<span class="vl">"table-wrap"</span><span class="tg">&gt;</span>
+<span class="cm">↑ Wrapper: mobile par horizontal scroll</span>
+
+<span class="tg">&lt;table</span> <span class="at">class</span>=<span class="vl">"data-table"</span><span class="tg">&gt;</span>
+
+  <span class="cm">&lt;!-- CAPTION: Table ka title (SEO) --&gt;</span>
+  <span class="tg">&lt;caption&gt;</span>Pricing Plans Comparison<span class="tg">&lt;/caption&gt;</span>
+
+  <span class="cm">&lt;!-- THEAD: Table Header rows --&gt;</span>
+  <span class="tg">&lt;thead&gt;</span>
+    <span class="tg">&lt;tr&gt;</span>  <span class="cm">&lt;-- Table Row --&gt;</span>
+      <span class="tg">&lt;th</span> <span class="at">scope</span>=<span class="vl">"col"</span><span class="tg">&gt;</span>Feature<span class="tg">&lt;/th&gt;</span>
+      <span class="tg">&lt;th</span> <span class="at">scope</span>=<span class="vl">"col"</span><span class="tg">&gt;</span>Basic<span class="tg">&lt;/th&gt;</span>
+      <span class="tg">&lt;th</span> <span class="at">scope</span>=<span class="vl">"col"</span><span class="tg">&gt;</span>Pro<span class="tg">&lt;/th&gt;</span>
+      <span class="tg">&lt;th</span> <span class="at">scope</span>=<span class="vl">"col"</span><span class="tg">&gt;</span>Enterprise<span class="tg">&lt;/th&gt;</span>
+    <span class="tg">&lt;/tr&gt;</span>
+  <span class="tg">&lt;/thead&gt;</span>
+
+  <span class="cm">&lt;!-- TBODY: Actual data --&gt;</span>
+  <span class="tg">&lt;tbody&gt;</span>
+
+    <span class="tg">&lt;tr&gt;</span>
+      <span class="cm">&lt;!-- TH for row header (scope="row") --&gt;</span>
+      <span class="tg">&lt;th</span> <span class="at">scope</span>=<span class="vl">"row"</span><span class="tg">&gt;</span>Price<span class="tg">&lt;/th&gt;</span>
+      <span class="cm">&lt;!-- TD: Data cells --&gt;</span>
+      <span class="tg">&lt;td&gt;</span>₹999/mo<span class="tg">&lt;/td&gt;</span>
+      <span class="tg">&lt;td</span> <span class="at">class</span>=<span class="vl">"featured-col"</span><span class="tg">&gt;</span>₹2499/mo<span class="tg">&lt;/td&gt;</span>
+      <span class="tg">&lt;td&gt;</span>Custom<span class="tg">&lt;/td&gt;</span>
+    <span class="tg">&lt;/tr&gt;</span>
+
+    <span class="tg">&lt;tr&gt;</span>
+      <span class="tg">&lt;th</span> <span class="at">scope</span>=<span class="vl">"row"</span><span class="tg">&gt;</span>Pages<span class="tg">&lt;/th&gt;</span>
+      <span class="tg">&lt;td&gt;</span>5<span class="tg">&lt;/td&gt;</span>
+      <span class="tg">&lt;td</span> <span class="at">class</span>=<span class="vl">"featured-col"</span><span class="tg">&gt;</span>Unlimited<span class="tg">&lt;/td&gt;</span>
+      <span class="tg">&lt;td&gt;</span>Unlimited<span class="tg">&lt;/td&gt;</span>
+    <span class="tg">&lt;/tr&gt;</span>
+
+    <span class="tg">&lt;tr&gt;</span>
+      <span class="tg">&lt;th</span> <span class="at">scope</span>=<span class="vl">"row"</span><span class="tg">&gt;</span>Support<span class="tg">&lt;/th&gt;</span>
+      <span class="tg">&lt;td&gt;</span>Email<span class="tg">&lt;/td&gt;</span>
+      <span class="tg">&lt;td</span> <span class="at">class</span>=<span class="vl">"featured-col"</span><span class="tg">&gt;</span>Priority<span class="tg">&lt;/td&gt;</span>
+      <span class="cm">&lt;!-- COLSPAN: 2 cells merge karo --&gt;</span>
+      <span class="tg">&lt;td</span> <span class="at">colspan</span>=<span class="vl">"1"</span><span class="tg">&gt;</span>24/7 Dedicated<span class="tg">&lt;/td&gt;</span>
+    <span class="tg">&lt;/tr&gt;</span>
+
+  <span class="tg">&lt;/tbody&gt;</span>
+
+  <span class="cm">&lt;!-- TFOOT: Summary row --&gt;</span>
+  <span class="tg">&lt;tfoot&gt;</span>
+    <span class="tg">&lt;tr&gt;</span>
+      <span class="tg">&lt;td</span> <span class="at">colspan</span>=<span class="vl">"4"</span><span class="tg">&gt;</span>
+        * Sab prices GST exclusive
+      <span class="tg">&lt;/td&gt;</span>
+    <span class="tg">&lt;/tr&gt;</span>
+  <span class="tg">&lt;/tfoot&gt;</span>
+
+<span class="tg">&lt;/table&gt;</span>
+<span class="tg">&lt;/div&gt;</span></pre>
+            </div>
+            <div class="code-pane">
+              <div class="code-pane-title">CSS</div>
+              <pre><span class="cm">/* Wrapper: mobile horizontal scroll */</span>
+<span class="sl">.table-wrap</span> {
+  <span class="pp">overflow-x</span>: auto;
+  <span class="cm">/* Mobile par swipe kar sako */</span>
+  <span class="pp">border-radius</span>: <span class="nm">14px</span>;
+  <span class="pp">border</span>: <span class="nm">1px</span> solid #<span class="nm">e2e8f0</span>;
+  <span class="pp">margin</span>: <span class="nm">24px 0</span>;
+}
+
+<span class="sl">.data-table</span> {
+  <span class="pp">width</span>: <span class="nm">100%</span>;
+  <span class="pp">border-collapse</span>: collapse;
+  <span class="cm">/* Cell borders merge hongi */</span>
+  <span class="pp">font-size</span>: <span class="nm">.9rem</span>;
+}
+
+<span class="cm">/* CAPTION */</span>
+<span class="sl">caption</span> {
+  <span class="pp">text-align</span>: left;
+  <span class="pp">padding</span>: <span class="nm">16px 20px</span>;
+  <span class="pp">font-weight</span>: <span class="nm">700</span>;
+  <span class="pp">font-size</span>: <span class="nm">1rem</span>;
+  <span class="pp">color</span>: #<span class="nm">1e293b</span>;
+}
+
+<span class="cm">/* HEADER */</span>
+<span class="sl">thead tr</span> {
+  <span class="pp">background</span>: #<span class="nm">f8fafc</span>;
+}
+<span class="sl">th</span> {
+  <span class="pp">padding</span>: <span class="nm">14px 20px</span>;
+  <span class="pp">text-align</span>: left;
+  <span class="pp">font-size</span>: <span class="nm">.8rem</span>;
+  <span class="pp">letter-spacing</span>: <span class="nm">0.5px</span>;
+  <span class="pp">text-transform</span>: uppercase;
+  <span class="pp">color</span>: #<span class="nm">64748b</span>;
+  <span class="pp">font-weight</span>: <span class="nm">600</span>;
+  <span class="pp">border-bottom</span>: <span class="nm">1px</span> solid #<span class="nm">e2e8f0</span>;
+}
+
+<span class="cm">/* DATA CELLS */</span>
+<span class="sl">td</span> {
+  <span class="pp">padding</span>: <span class="nm">14px 20px</span>;
+  <span class="pp">border-bottom</span>: <span class="nm">1px</span> solid #<span class="nm">f1f5f9</span>;
+  <span class="pp">color</span>: #<span class="nm">334155</span>;
+}
+
+<span class="cm">/* ZEBRA STRIPING */</span>
+<span class="sl">tbody tr:nth-child(even)</span> {
+  <span class="pp">background</span>: #<span class="nm">fafbff</span>;
+  <span class="cm">/* Alternate row color */</span>
+}
+
+<span class="cm">/* ROW HOVER */</span>
+<span class="sl">tbody tr:hover</span> {
+  <span class="pp">background</span>: #<span class="nm">f0f4ff</span>;
+}
+
+<span class="cm">/* FEATURED COLUMN */</span>
+<span class="sl">.featured-col</span> {
+  <span class="pp">background</span>: #<span class="nm">6366f108</span>;
+  <span class="pp">color</span>: #<span class="nm">6366f1</span>;
+  <span class="pp">font-weight</span>: <span class="nm">600</span>;
+  <span class="pp">border-left</span>: <span class="nm">2px</span> solid #<span class="nm">6366f130</span>;
+  <span class="pp">border-right</span>: <span class="nm">2px</span> solid #<span class="nm">6366f130</span>;
+}
+
+<span class="cm">/* FOOTER ROW */</span>
+<span class="sl">tfoot td</span> {
+  <span class="pp">color</span>: #<span class="nm">94a3b8</span>;
+  <span class="pp">font-size</span>: <span class="nm">.8rem</span>;
+  <span class="pp">padding</span>: <span class="nm">12px 20px</span>;
+  <span class="pp">border-top</span>: <span class="nm">1px</span> solid #<span class="nm">e2e8f0</span>;
+}</pre>
+            </div>
+          </div>
+        </div>
+
+        <div
+          style="
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 20px 0;
+          "
+        >
+          <div class="explain-row">
+            <div class="tag-col" style="color: #7ee787">
+              &lt;thead&gt; &lt;tbody&gt; &lt;tfoot&gt;
+            </div>
+            <div class="info-col">
+              <strong>Table Ko 3 Parts Mein Divide Karo</strong>
+              <p>
+                Browser printing mein header/footer repeat karta hai. Screen
+                readers bhi inhe alag samajhte hain. CSS styling bhi alag-alag
+                ho sakti hai.
+              </p>
+            </div>
+          </div>
+          <div class="explain-row">
+            <div class="tag-col" style="color: #7ee787">scope="col/row"</div>
+            <div class="info-col">
+              <strong>Accessibility Attribute</strong>
+              <p>
+                Screen readers ko batata hai: ye &lt;th&gt; column ka header hai
+                ya row ka. Visually impaired users ke liye table padhna easy ho
+                jaata hai.
+              </p>
+            </div>
+          </div>
+          <div class="explain-row">
+            <div class="tag-col" style="color: #7ee787">colspan="2"</div>
+            <div class="info-col">
+              <strong>Cells Merge Karo</strong>
+              <p>
+                colspan se horizontal cells merge hoti hain. rowspan se vertical
+                merge. Jaise Excel mein "Merge Cells" karte hain.
+              </p>
+            </div>
+          </div>
+          <div class="explain-row">
+            <div class="tag-col" style="color: #79c0ff">
+              border-collapse: collapse
+            </div>
+            <div class="info-col">
+              <strong>Double Border Hatao</strong>
+              <p>
+                Default mein har cell ki alag border hoti hai — double line
+                dikhti hai. collapse se sab borders ek ho jaati hain — clean
+                look milta hai.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!--  10. FORM                               -->
+      <!-- ═══════════════════════════════════════ -->
+      <section class="section" id="form-sec">
+        <div
+          class="section-eyebrow"
+          style="
+            background: #ff4e8a15;
+            color: #ff4e8a;
+            border: 1px solid #ff4e8a30;
+          "
+        >
+          <span>10</span> Form Section
+        </div>
+        <h2 class="section-title">📝 Form / Contact Section</h2>
+        <p class="section-desc">
+          Contact form, login form, sign up — yahan sab elements cover honge:
+          input, textarea, select, checkbox, radio, button — aur validation bhi.
+        </p>
+
+        <div class="code-file">
+          <div class="code-topbar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <div class="code-filename">
+              <span class="badge-html">HTML</span> +
+              <span class="badge-css">CSS</span> +
+              <span class="badge-js">JS</span> — Complete Form
+            </div>
+          </div>
+          <div class="code-body">
+            <div class="code-pane">
+              <div class="code-pane-title">HTML — Poora Form</div>
+              <pre><span class="tg">&lt;section</span> <span class="at">id</span>=<span class="vl">"contact"</span><span class="tg">&gt;</span>
+  <span class="tg">&lt;h2&gt;</span>Mujhse Baat Karo<span class="tg">&lt;/h2&gt;</span>
+
+  <span class="cm">&lt;!-- FORM: action = data kahan jaayega --&gt;</span>
+  <span class="tg">&lt;form</span>
+    <span class="at">id</span>=<span class="vl">"contact-form"</span>
+    <span class="at">action</span>=<span class="vl">"https://formspree.io/f/xyz"</span>
+    <span class="cm">↑ Form data yahan submit hoga</span>
+    <span class="at">method</span>=<span class="vl">"POST"</span>
+    <span class="cm">↑ GET=URL mein data, POST=body mein</span>
+    <span class="at">novalidate</span>
+    <span class="cm">↑ Browser validation rok, JS se karenge</span>
+  <span class="tg">&gt;</span>
+
+    <span class="cm">&lt;!-- ── TEXT INPUT ── --&gt;</span>
+    <span class="tg">&lt;div</span> <span class="at">class</span>=<span class="vl">"form-group"</span><span class="tg">&gt;</span>
+
+      <span class="cm">&lt;!-- LABEL: Input ka description --&gt;</span>
+      <span class="tg">&lt;label</span> <span class="at">for</span>=<span class="vl">"name"</span><span class="tg">&gt;</span>Aapka Naam *<span class="tg">&lt;/label&gt;</span>
+      <span class="cm">↑ for="name" → input id="name" se link</span>
+
+      <span class="tg">&lt;input</span>
+        <span class="at">type</span>=<span class="vl">"text"</span>
+        <span class="cm">↑ Text input</span>
+        <span class="at">id</span>=<span class="vl">"name"</span>
+        <span class="cm">↑ Label se connected</span>
+        <span class="at">name</span>=<span class="vl">"name"</span>
+        <span class="cm">↑ Server ko ye naam se milega</span>
+        <span class="at">placeholder</span>=<span class="vl">"Jaise: Rahul Sharma"</span>
+        <span class="cm">↑ Placeholder hint</span>
+        <span class="at">required</span>
+        <span class="cm">↑ Empty submit nahi hoga</span>
+        <span class="at">minlength</span>=<span class="vl">"2"</span>
+        <span class="cm">↑ Min 2 characters</span>
+        <span class="at">autocomplete</span>=<span class="vl">"name"</span>
+        <span class="cm">↑ Browser autofill karega</span>
+      <span class="tg">/&gt;</span>
+
+      <span class="cm">&lt;!-- Error message --&gt;</span>
+      <span class="tg">&lt;span</span> <span class="at">class</span>=<span class="vl">"error"</span> <span class="at">id</span>=<span class="vl">"name-error"</span><span class="tg">&gt;</span>
+        Naam zaroor bharein
+      <span class="tg">&lt;/span&gt;</span>
+    <span class="tg">&lt;/div&gt;</span>
+
+    <span class="cm">&lt;!-- ── EMAIL INPUT ── --&gt;</span>
+    <span class="tg">&lt;div</span> <span class="at">class</span>=<span class="vl">"form-group"</span><span class="tg">&gt;</span>
+      <span class="tg">&lt;label</span> <span class="at">for</span>=<span class="vl">"email"</span><span class="tg">&gt;</span>Email Address *<span class="tg">&lt;/label&gt;</span>
+      <span class="tg">&lt;input</span>
+        <span class="at">type</span>=<span class="vl">"email"</span>
+        <span class="cm">↑ @ aur .com validate karega</span>
+        <span class="at">id</span>=<span class="vl">"email"</span>
+        <span class="at">name</span>=<span class="vl">"email"</span>
+        <span class="at">placeholder</span>=<span class="vl">"rahul@gmail.com"</span>
+        <span class="at">required</span>
+        <span class="at">autocomplete</span>=<span class="vl">"email"</span>
+      <span class="tg">/&gt;</span>
+    <span class="tg">&lt;/div&gt;</span>
+
+    <span class="cm">&lt;!-- ── PHONE INPUT ── --&gt;</span>
+    <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="vl">"tel"</span>
+           <span class="at">pattern</span>=<span class="vl">"[0-9]{10}"</span>
+           <span class="cm">↑ Sirf 10 digit phone</span>
+           <span class="at">placeholder</span>=<span class="vl">"10 digit number"</span> <span class="tg">/&gt;</span>
+
+    <span class="cm">&lt;!-- ── SELECT DROPDOWN ── --&gt;</span>
+    <span class="tg">&lt;div</span> <span class="at">class</span>=<span class="vl">"form-group"</span><span class="tg">&gt;</span>
+      <span class="tg">&lt;label</span> <span class="at">for</span>=<span class="vl">"service"</span><span class="tg">&gt;</span>Service Select Karo<span class="tg">&lt;/label&gt;</span>
+      <span class="tg">&lt;select</span> <span class="at">id</span>=<span class="vl">"service"</span> <span class="at">name</span>=<span class="vl">"service"</span><span class="tg">&gt;</span>
+        <span class="tg">&lt;option</span> <span class="at">value</span>=<span class="vl">""</span><span class="tg">&gt;</span>-- Choose One --<span class="tg">&lt;/option&gt;</span>
+        <span class="tg">&lt;option</span> <span class="at">value</span>=<span class="vl">"web"</span><span class="tg">&gt;</span>Web Development<span class="tg">&lt;/option&gt;</span>
+        <span class="tg">&lt;option</span> <span class="at">value</span>=<span class="vl">"design"</span><span class="tg">&gt;</span>UI Design<span class="tg">&lt;/option&gt;</span>
+        <span class="tg">&lt;option</span> <span class="at">value</span>=<span class="vl">"seo"</span><span class="tg">&gt;</span>SEO<span class="tg">&lt;/option&gt;</span>
+      <span class="tg">&lt;/select&gt;</span>
+    <span class="tg">&lt;/div&gt;</span>
+
+    <span class="cm">&lt;!-- ── RADIO BUTTONS ── --&gt;</span>
+    <span class="tg">&lt;fieldset&gt;</span>
+      <span class="tg">&lt;legend&gt;</span>Budget Range<span class="tg">&lt;/legend&gt;</span>
+      <span class="tg">&lt;label&gt;</span>
+        <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="vl">"radio"</span> <span class="at">name</span>=<span class="vl">"budget"</span>
+               <span class="at">value</span>=<span class="vl">"small"</span><span class="tg">/&gt;</span>
+        ₹10k-50k
+      <span class="tg">&lt;/label&gt;</span>
+      <span class="tg">&lt;label&gt;</span>
+        <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="vl">"radio"</span> <span class="at">name</span>=<span class="vl">"budget"</span>
+               <span class="at">value</span>=<span class="vl">"medium"</span><span class="tg">/&gt;</span>
+        ₹50k-2L
+      <span class="tg">&lt;/label&gt;</span>
+    <span class="tg">&lt;/fieldset&gt;</span>
+
+    <span class="cm">&lt;!-- ── CHECKBOX ── --&gt;</span>
+    <span class="tg">&lt;label</span> <span class="at">class</span>=<span class="vl">"checkbox-wrap"</span><span class="tg">&gt;</span>
+      <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="vl">"checkbox"</span>
+             <span class="at">name</span>=<span class="vl">"newsletter"</span>
+             <span class="at">value</span>=<span class="vl">"yes"</span> <span class="tg">/&gt;</span>
+      Newsletter subscribe karo
+    <span class="tg">&lt;/label&gt;</span>
+
+    <span class="cm">&lt;!-- ── TEXTAREA ── --&gt;</span>
+    <span class="tg">&lt;div</span> <span class="at">class</span>=<span class="vl">"form-group"</span><span class="tg">&gt;</span>
+      <span class="tg">&lt;label</span> <span class="at">for</span>=<span class="vl">"message"</span><span class="tg">&gt;</span>Message *<span class="tg">&lt;/label&gt;</span>
+      <span class="tg">&lt;textarea</span>
+        <span class="at">id</span>=<span class="vl">"message"</span>
+        <span class="at">name</span>=<span class="vl">"message"</span>
+        <span class="at">rows</span>=<span class="vl">"5"</span>
+        <span class="cm">↑ 5 lines height</span>
+        <span class="at">placeholder</span>=<span class="vl">"Apna project describe karo..."</span>
+        <span class="at">required</span>
+        <span class="at">minlength</span>=<span class="vl">"20"</span>
+      <span class="tg">&gt;&lt;/textarea&gt;</span>
+    <span class="tg">&lt;/div&gt;</span>
+
+    <span class="cm">&lt;!-- ── SUBMIT BUTTON ── --&gt;</span>
+    <span class="tg">&lt;button</span>
+      <span class="at">type</span>=<span class="vl">"submit"</span>
+      <span class="cm">↑ Form submit karega click par</span>
+      <span class="at">class</span>=<span class="vl">"submit-btn"</span>
+      <span class="at">id</span>=<span class="vl">"submit-btn"</span>
+    <span class="tg">&gt;</span>
+      <span class="tg">&lt;span</span> <span class="at">class</span>=<span class="vl">"btn-text"</span><span class="tg">&gt;</span>Message Bhejo<span class="tg">&lt;/span&gt;</span>
+      <span class="tg">&lt;span</span> <span class="at">class</span>=<span class="vl">"loading"</span><span class="tg">&gt;</span>Sending...<span class="tg">&lt;/span&gt;</span>
+    <span class="tg">&lt;/button&gt;</span>
+
+  <span class="tg">&lt;/form&gt;</span>
+<span class="tg">&lt;/section&gt;</span></pre>
+            </div>
+            <div class="code-pane">
+              <div class="code-pane-title">CSS + JS</div>
+              <pre><span class="cm">/* ── FORM GROUP ── */</span>
+<span class="sl">.form-group</span> {
+  <span class="pp">display</span>: flex;
+  <span class="pp">flex-direction</span>: column;
+  <span class="pp">gap</span>: <span class="nm">6px</span>;
+  <span class="pp">margin-bottom</span>: <span class="nm">20px</span>;
+}
+
+<span class="cm">/* ── LABEL ── */</span>
+<span class="sl">label</span> {
+  <span class="pp">font-size</span>: <span class="nm">.88rem</span>;
+  <span class="pp">font-weight</span>: <span class="nm">600</span>;
+  <span class="pp">color</span>: #<span class="nm">374151</span>;
+}
+
+<span class="cm">/* ── ALL INPUTS ── */</span>
+<span class="sl">input, textarea, select</span> {
+  <span class="pp">width</span>: <span class="nm">100%</span>;
+  <span class="pp">padding</span>: <span class="nm">12px 16px</span>;
+  <span class="pp">border</span>: <span class="nm">2px</span> solid #<span class="nm">e2e8f0</span>;
+  <span class="pp">border-radius</span>: <span class="nm">10px</span>;
+  <span class="pp">font-size</span>: <span class="nm">1rem</span>;
+  <span class="pp">font-family</span>: inherit;
+  <span class="pp">color</span>: #<span class="nm">1e293b</span>;
+  <span class="pp">background</span>: #<span class="nm">fafbff</span>;
+  <span class="pp">transition</span>: all <span class="nm">0.2s</span>;
+  <span class="pp">outline</span>: none;
+}
+
+<span class="cm">/* FOCUS STATE — Click par highlight */</span>
+<span class="sl">input:focus, textarea:focus, select:focus</span> {
+  <span class="pp">border-color</span>: #<span class="nm">6366f1</span>;
+  <span class="pp">background</span>: white;
+  <span class="pp">box-shadow</span>: <span class="nm">0 0 0 4px</span> #<span class="nm">6366f120</span>;
+}
+
+<span class="cm">/* INVALID STATE */</span>
+<span class="sl">input.invalid</span> {
+  <span class="pp">border-color</span>: #<span class="nm">ef4444</span>;
+  <span class="pp">background</span>: #<span class="nm">fef2f2</span>;
+}
+
+<span class="cm">/* ERROR MESSAGE */</span>
+<span class="sl">.error</span> {
+  <span class="pp">display</span>: none;
+  <span class="pp">color</span>: #<span class="nm">ef4444</span>;
+  <span class="pp">font-size</span>: <span class="nm">.8rem</span>;
+}
+<span class="sl">.error.show</span> {
+  <span class="pp">display</span>: block;
+}
+
+<span class="cm">/* TEXTAREA */</span>
+<span class="sl">textarea</span> {
+  <span class="pp">resize</span>: vertical;
+  <span class="cm">/* Sirf height resize ho */</span>
+  <span class="pp">min-height</span>: <span class="nm">120px</span>;
+}
+
+<span class="cm">/* SUBMIT BUTTON */</span>
+<span class="sl">.submit-btn</span> {
+  <span class="pp">width</span>: <span class="nm">100%</span>;
+  <span class="pp">padding</span>: <span class="nm">14px</span>;
+  <span class="pp">background</span>: <span class="fn">linear-gradient</span>(
+    135deg, #<span class="nm">6366f1</span>, #<span class="nm">a855f7</span>
+  );
+  <span class="pp">color</span>: white;
+  <span class="pp">border</span>: none;
+  <span class="pp">border-radius</span>: <span class="nm">10px</span>;
+  <span class="pp">font-size</span>: <span class="nm">1rem</span>;
+  <span class="pp">font-weight</span>: <span class="nm">600</span>;
+  <span class="pp">cursor</span>: pointer;
+  <span class="pp">transition</span>: all <span class="nm">0.2s</span>;
+}
+<span class="sl">.submit-btn:hover</span> {
+  <span class="pp">transform</span>: <span class="fn">translateY</span>(<span class="nm">-2px</span>);
+  <span class="pp">box-shadow</span>: <span class="nm">0 8px 25px</span> #<span class="nm">6366f140</span>;
+}
+<span class="sl">.submit-btn:disabled</span> {
+  <span class="pp">opacity</span>: <span class="nm">0.6</span>;
+  <span class="pp">cursor</span>: not-allowed;
+}
+
+<span class="cm">/* ── JS VALIDATION ── */</span>
+<span class="kw">const</span> form = document.<span class="fn">getElementById</span>(<span class="st">'contact-form'</span>);
+
+form.<span class="fn">addEventListener</span>(<span class="st">'submit'</span>, async (e) => {
+  e.<span class="fn">preventDefault</span>();
+  <span class="cm">// Default submit rok</span>
+
+  <span class="kw">let</span> isValid = <span class="kw">true</span>;
+
+  <span class="cm">// Name validate karo</span>
+  <span class="kw">const</span> name = document.<span class="fn">getElementById</span>(<span class="st">'name'</span>);
+  <span class="kw">const</span> nameErr = document.<span class="fn">getElementById</span>(<span class="st">'name-error'</span>);
+
+  <span class="kw">if</span> (name.value.trim().length < <span class="nm">2</span>) {
+    name.classList.<span class="fn">add</span>(<span class="st">'invalid'</span>);
+    nameErr.classList.<span class="fn">add</span>(<span class="st">'show'</span>);
+    isValid = <span class="kw">false</span>;
+  } <span class="kw">else</span> {
+    name.classList.<span class="fn">remove</span>(<span class="st">'invalid'</span>);
+    nameErr.classList.<span class="fn">remove</span>(<span class="st">'show'</span>);
+  }
+
+  <span class="kw">if</span> (!isValid) <span class="kw">return</span>;
+
+  <span class="cm">// Submit karo</span>
+  <span class="kw">const</span> btn = document.<span class="fn">getElementById</span>(<span class="st">'submit-btn'</span>);
+  btn.disabled = <span class="kw">true</span>;
+  btn.textContent = <span class="st">'Sending... ✈️'</span>;
+
+  <span class="kw">try</span> {
+    <span class="kw">await</span> <span class="fn">fetch</span>(form.action, {
+      method: <span class="st">'POST'</span>,
+      body: <span class="kw">new</span> <span class="fn">FormData</span>(form),
+    });
+    btn.textContent = <span class="st">'Bhej Diya! ✅'</span>;
+    form.<span class="fn">reset</span>();
+  } <span class="kw">catch</span> (err) {
+    btn.textContent = <span class="st">'Error! Try Again ❌'</span>;
+    btn.disabled = <span class="kw">false</span>;
+  }
+});</pre>
+            </div>
+          </div>
+        </div>
+
+        <table class="attr-table">
+          <thead>
+            <tr>
+              <th>Input Type</th>
+              <th>Kab Use Karein</th>
+              <th>Special Feature</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>type="text"</td>
+              <td>Naam, address, general text</td>
+              <td>Koi restriction nahi</td>
+            </tr>
+            <tr>
+              <td>type="email"</td>
+              <td>Email address</td>
+              <td>@ aur domain validate karta hai automatically</td>
+            </tr>
+            <tr>
+              <td>type="tel"</td>
+              <td>Phone number</td>
+              <td>Mobile par numeric keyboard khulta hai</td>
+            </tr>
+            <tr>
+              <td>type="password"</td>
+              <td>Password</td>
+              <td>Characters hide ho jaate hain (dots)</td>
+            </tr>
+            <tr>
+              <td>type="number"</td>
+              <td>Age, quantity, price</td>
+              <td>Up/down arrows, min/max set kar sakte ho</td>
+            </tr>
+            <tr>
+              <td>type="date"</td>
+              <td>Date picker</td>
+              <td>Browser ka native calendar dikhaata hai</td>
+            </tr>
+            <tr>
+              <td>type="checkbox"</td>
+              <td>Multiple select</td>
+              <td>Multiple check kar sakte hain</td>
+            </tr>
+            <tr>
+              <td>type="radio"</td>
+              <td>Ek option choose karo</td>
+              <td>Same name se group banta hai, ek hi select ho sakta</td>
+            </tr>
+            <tr>
+              <td>type="file"</td>
+              <td>File upload</td>
+              <td>accept=".jpg,.pdf" se file type restrict kar sakte ho</td>
+            </tr>
+            <tr>
+              <td>type="submit"</td>
+              <td>Form submit</td>
+              <td>Form automatically submit karta hai</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- ═══════════════════════════════════════ -->
+      <!--  11. FOOTER                             -->
+      <!-- ═══════════════════════════════════════ -->
+      <section class="section" id="footer-sec">
+        <div
+          class="section-eyebrow"
+          style="
+            background: #5a7a9915;
+            color: #8ab4d4;
+            border: 1px solid #5a7a9930;
+          "
+        >
+          <span>11</span> Footer
+        </div>
+        <h2 class="section-title">🏁 Footer — Page Ka Ant</h2>
+        <p class="section-desc">
+          Footer mein copyright, social links, extra navigation, aur contact
+          info hoti hai. Multi-column layout aur sab kuch.
+        </p>
+
+        <div class="code-file">
+          <div class="code-topbar">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <div class="code-filename">
+              <span class="badge-html">HTML</span> +
+              <span class="badge-css">CSS</span> — Complete Footer
+            </div>
+          </div>
+          <div class="code-body">
+            <div class="code-pane">
+              <div class="code-pane-title">HTML</div>
+              <pre><span class="cm">&lt;!-- FOOTER: Semantic tag for page bottom --&gt;</span>
+<span class="tg">&lt;footer</span> <span class="at">class</span>=<span class="vl">"site-footer"</span><span class="tg">&gt;</span>
+
+  <span class="cm">&lt;!-- Top section: 4 columns --&gt;</span>
+  <span class="tg">&lt;div</span> <span class="at">class</span>=<span class="vl">"footer-grid"</span><span class="tg">&gt;</span>
+
+    <span class="cm">&lt;!-- Column 1: Brand --&gt;</span>
+    <span class="tg">&lt;div</span> <span class="at">class</span>=<span class="vl">"footer-brand"</span><span class="tg">&gt;</span>
+      <span class="tg">&lt;div</span> <span class="at">class</span>=<span class="vl">"logo"</span><span class="tg">&gt;</span>⚡ MyBrand<span class="tg">&lt;/div&gt;</span>
+      <span class="tg">&lt;p&gt;</span>
+        Beautiful websites jo business
+        grow karte hain.
+      <span class="tg">&lt;/p&gt;</span>
+
+      <span class="cm">&lt;!-- Social Icons --&gt;</span>
+      <span class="tg">&lt;div</span> <span class="at">class</span>=<span class="vl">"social-links"</span><span class="tg">&gt;</span>
+        <span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"https://github.com/rahul"</span>
+           <span class="at">target</span>=<span class="vl">"_blank"</span>
+           <span class="at">rel</span>=<span class="vl">"noopener"</span>
+           <span class="at">aria-label</span>=<span class="vl">"GitHub"</span><span class="tg">&gt;</span>
+          <span class="cm">&lt;!-- aria-label: icon ka text --&gt;</span>
+          🐙
+        <span class="tg">&lt;/a&gt;</span>
+        <span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"https://linkedin.com/in/rahul"</span>
+           <span class="at">aria-label</span>=<span class="vl">"LinkedIn"</span><span class="tg">&gt;</span>💼<span class="tg">&lt;/a&gt;</span>
+        <span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"https://twitter.com/rahul"</span>
+           <span class="at">aria-label</span>=<span class="vl">"Twitter"</span><span class="tg">&gt;</span>🐦<span class="tg">&lt;/a&gt;</span>
+      <span class="tg">&lt;/div&gt;</span>
+    <span class="tg">&lt;/div&gt;</span>
+
+    <span class="cm">&lt;!-- Column 2: Nav Links --&gt;</span>
+    <span class="tg">&lt;div&gt;</span>
+      <span class="tg">&lt;h4&gt;</span>Quick Links<span class="tg">&lt;/h4&gt;</span>
+      <span class="tg">&lt;ul&gt;</span>
+        <span class="tg">&lt;li&gt;&lt;a</span> <span class="at">href</span>=<span class="vl">"#home"</span><span class="tg">&gt;</span>Home<span class="tg">&lt;/a&gt;&lt;/li&gt;</span>
+        <span class="tg">&lt;li&gt;&lt;a</span> <span class="at">href</span>=<span class="vl">"#about"</span><span class="tg">&gt;</span>About<span class="tg">&lt;/a&gt;&lt;/li&gt;</span>
+        <span class="tg">&lt;li&gt;&lt;a</span> <span class="at">href</span>=<span class="vl">"#services"</span><span class="tg">&gt;</span>Services<span class="tg">&lt;/a&gt;&lt;/li&gt;</span>
+        <span class="tg">&lt;li&gt;&lt;a</span> <span class="at">href</span>=<span class="vl">"#contact"</span><span class="tg">&gt;</span>Contact<span class="tg">&lt;/a&gt;&lt;/li&gt;</span>
+      <span class="tg">&lt;/ul&gt;</span>
+    <span class="tg">&lt;/div&gt;</span>
+
+    <span class="cm">&lt;!-- Column 3: Services --&gt;</span>
+    <span class="tg">&lt;div&gt;</span>
+      <span class="tg">&lt;h4&gt;</span>Services<span class="tg">&lt;/h4&gt;</span>
+      <span class="tg">&lt;ul&gt;</span>
+        <span class="tg">&lt;li&gt;&lt;a</span> <span class="at">href</span>=<span class="vl">"#"</span><span class="tg">&gt;</span>Web Development<span class="tg">&lt;/a&gt;&lt;/li&gt;</span>
+        <span class="tg">&lt;li&gt;&lt;a</span> <span class="at">href</span>=<span class="vl">"#"</span><span class="tg">&gt;</span>UI/UX Design<span class="tg">&lt;/a&gt;&lt;/li&gt;</span>
+        <span class="tg">&lt;li&gt;&lt;a</span> <span class="at">href</span>=<span class="vl">"#"</span><span class="tg">&gt;</span>SEO Optimization<span class="tg">&lt;/a&gt;&lt;/li&gt;</span>
+      <span class="tg">&lt;/ul&gt;</span>
+    <span class="tg">&lt;/div&gt;</span>
+
+    <span class="cm">&lt;!-- Column 4: Contact Info --&gt;</span>
+    <span class="tg">&lt;div&gt;</span>
+      <span class="tg">&lt;h4&gt;</span>Sampark Karo<span class="tg">&lt;/h4&gt;</span>
+      <span class="tg">&lt;address&gt;</span>
+        <span class="cm">&lt;!-- ADDRESS: Semantic contact info --&gt;</span>
+        <span class="tg">&lt;p&gt;</span>
+          <span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"mailto:rahul@gmail.com"</span><span class="tg">&gt;</span>
+            <span class="cm">↑ Click par email app khulega</span>
+            📧 rahul@gmail.com
+          <span class="tg">&lt;/a&gt;</span>
+        <span class="tg">&lt;/p&gt;</span>
+        <span class="tg">&lt;p&gt;</span>
+          <span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"tel:+919876543210"</span><span class="tg">&gt;</span>
+            <span class="cm">↑ Mobile par click = direct call</span>
+            📞 +91 98765 43210
+          <span class="tg">&lt;/a&gt;</span>
+        <span class="tg">&lt;/p&gt;</span>
+        <span class="tg">&lt;p&gt;</span>📍 Mumbai, Maharashtra<span class="tg">&lt;/p&gt;</span>
+      <span class="tg">&lt;/address&gt;</span>
+    <span class="tg">&lt;/div&gt;</span>
+
+  <span class="tg">&lt;/div&gt;</span>
+
+  <span class="cm">&lt;!-- Divider line --&gt;</span>
+  <span class="tg">&lt;hr</span> <span class="at">class</span>=<span class="vl">"footer-divider"</span> <span class="tg">/&gt;</span>
+
+  <span class="cm">&lt;!-- Bottom bar: copyright --&gt;</span>
+  <span class="tg">&lt;div</span> <span class="at">class</span>=<span class="vl">"footer-bottom"</span><span class="tg">&gt;</span>
+
+    <span class="cm">&lt;!-- &amp;copy; = © symbol --&gt;</span>
+    <span class="tg">&lt;p&gt;</span>
+      &amp;copy;
+      <span class="cm">↑ HTML Entity = © character</span>
+      <span class="tg">&lt;span</span> <span class="at">id</span>=<span class="vl">"year"</span><span class="tg">&gt;&lt;/span&gt;</span>
+      <span class="cm">↑ JS se year auto-update hoga</span>
+      MyBrand. All rights reserved.
+    <span class="tg">&lt;/p&gt;</span>
+
+    <span class="tg">&lt;div</span> <span class="at">class</span>=<span class="vl">"footer-legal"</span><span class="tg">&gt;</span>
+      <span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"/privacy"</span><span class="tg">&gt;</span>Privacy Policy<span class="tg">&lt;/a&gt;</span>
+      <span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"/terms"</span><span class="tg">&gt;</span>Terms<span class="tg">&lt;/a&gt;</span>
+    <span class="tg">&lt;/div&gt;</span>
+
+    <span class="cm">&lt;!-- Scroll to top --&gt;</span>
+    <span class="tg">&lt;button</span> <span class="at">onclick</span>=<span class="vl">"window.scrollTo({top:0,behavior:'smooth'})"</span>
+            <span class="at">class</span>=<span class="vl">"scroll-top"</span>
+            <span class="at">aria-label</span>=<span class="vl">"Top par jao"</span><span class="tg">&gt;</span>
+      ↑
+    <span class="tg">&lt;/button&gt;</span>
+
+  <span class="tg">&lt;/div&gt;</span>
+
+<span class="tg">&lt;/footer&gt;</span>
+
+<span class="cm">/* Year auto update */</span>
+<span class="kw">document</span>.<span class="fn">getElementById</span>(<span class="st">'year'</span>).textContent =
+  <span class="kw">new</span> <span class="fn">Date</span>().<span class="fn">getFullYear</span>();
+<span class="cm">↑ Har saal automatically update hoga!</span></pre>
+            </div>
+            <div class="code-pane">
+              <div class="code-pane-title">CSS</div>
+              <pre><span class="sl">.site-footer</span> {
+  <span class="pp">background</span>: #<span class="nm">0f172a</span>;
+  <span class="pp">color</span>: #<span class="nm">94a3b8</span>;
+  <span class="pp">padding</span>: <span class="nm">60px 80px 30px</span>;
+}
+
+<span class="cm">/* 4 column grid */</span>
+<span class="sl">.footer-grid</span> {
+  <span class="pp">display</span>: grid;
+  <span class="pp">grid-template-columns</span>:
+    <span class="nm">2fr</span> 1fr 1fr <span class="nm">1.5fr</span>;
+  <span class="cm">/* Brand ko zyada space */</span>
+  <span class="pp">gap</span>: <span class="nm">48px</span>;
+  <span class="pp">margin-bottom</span>: <span class="nm">48px</span>;
+}
+
+<span class="cm">/* Footer headings */</span>
+<span class="sl">.site-footer h4</span> {
+  <span class="pp">color</span>: white;
+  <span class="pp">font-size</span>: <span class="nm">.85rem</span>;
+  <span class="pp">letter-spacing</span>: <span class="nm">1.5px</span>;
+  <span class="pp">text-transform</span>: uppercase;
+  <span class="pp">margin-bottom</span>: <span class="nm">20px</span>;
+}
+
+<span class="cm">/* Footer links */</span>
+<span class="sl">.site-footer ul</span> {
+  <span class="pp">list-style</span>: none;
+  <span class="pp">display</span>: flex;
+  <span class="pp">flex-direction</span>: column;
+  <span class="pp">gap</span>: <span class="nm">10px</span>;
+}
+<span class="sl">.site-footer a</span> {
+  <span class="pp">color</span>: #<span class="nm">64748b</span>;
+  <span class="pp">text-decoration</span>: none;
+  <span class="pp">font-size</span>: <span class="nm">.88rem</span>;
+  <span class="pp">transition</span>: color <span class="nm">0.2s</span>;
+}
+<span class="sl">.site-footer a:hover</span> {
+  <span class="pp">color</span>: white;
+}
+
+<span class="cm">/* SOCIAL ICONS */</span>
+<span class="sl">.social-links</span> {
+  <span class="pp">display</span>: flex;
+  <span class="pp">gap</span>: <span class="nm">12px</span>;
+  <span class="pp">margin-top</span>: <span class="nm">20px</span>;
+}
+<span class="sl">.social-links a</span> {
+  <span class="pp">width</span>: <span class="nm">38px</span>; <span class="pp">height</span>: <span class="nm">38px</span>;
+  <span class="pp">background</span>: #<span class="nm">1e293b</span>;
+  <span class="pp">border-radius</span>: <span class="nm">8px</span>;
+  <span class="pp">display</span>: flex;
+  <span class="pp">align-items</span>: center;
+  <span class="pp">justify-content</span>: center;
+  <span class="pp">font-size</span>: <span class="nm">1.1rem</span>;
+  <span class="pp">transition</span>: all <span class="nm">0.2s</span>;
+}
+<span class="sl">.social-links a:hover</span> {
+  <span class="pp">background</span>: #<span class="nm">6366f1</span>;
+  <span class="pp">transform</span>: <span class="fn">translateY</span>(<span class="nm">-3px</span>);
+}
+
+<span class="cm">/* DIVIDER */</span>
+<span class="sl">.footer-divider</span> {
+  <span class="pp">border</span>: none;
+  <span class="pp">border-top</span>: <span class="nm">1px</span> solid #<span class="nm">1e293b</span>;
+  <span class="pp">margin</span>: <span class="nm">0 0 24px</span>;
+}
+
+<span class="cm">/* BOTTOM BAR */</span>
+<span class="sl">.footer-bottom</span> {
+  <span class="pp">display</span>: flex;
+  <span class="pp">justify-content</span>: space-between;
+  <span class="pp">align-items</span>: center;
+  <span class="pp">font-size</span>: <span class="nm">.83rem</span>;
+  <span class="pp">color</span>: #<span class="nm">475569</span>;
+  <span class="pp">flex-wrap</span>: wrap;
+  <span class="pp">gap</span>: <span class="nm">12px</span>;
+}
+
+<span class="sl">.footer-legal</span> {
+  <span class="pp">display</span>: flex;
+  <span class="pp">gap</span>: <span class="nm">20px</span>;
+}
+
+<span class="cm">/* SCROLL TOP BUTTON */</span>
+<span class="sl">.scroll-top</span> {
+  <span class="pp">width</span>: <span class="nm">36px</span>; <span class="pp">height</span>: <span class="nm">36px</span>;
+  <span class="pp">background</span>: #<span class="nm">1e293b</span>;
+  <span class="pp">border</span>: <span class="nm">1px</span> solid #<span class="nm">334155</span>;
+  <span class="pp">color</span>: white;
+  <span class="pp">border-radius</span>: <span class="nm">8px</span>;
+  <span class="pp">cursor</span>: pointer;
+  <span class="pp">font-size</span>: <span class="nm">1rem</span>;
+  <span class="pp">transition</span>: all <span class="nm">0.2s</span>;
+}
+<span class="sl">.scroll-top:hover</span> {
+  <span class="pp">background</span>: #<span class="nm">6366f1</span>;
+  <span class="pp">border-color</span>: #<span class="nm">6366f1</span>;
+}
+
+<span class="cm">/* ADDRESS tag: italic default — reset karo */</span>
+<span class="sl">address</span> {
+  <span class="pp">font-style</span>: normal;
+  <span class="pp">display</span>: flex;
+  <span class="pp">flex-direction</span>: column;
+  <span class="pp">gap</span>: <span class="nm">10px</span>;
+}
+
+<span class="cm">/* MOBILE FOOTER */</span>
+<span class="kw">@media</span>(max-width: <span class="nm">768px</span>) {
+  <span class="sl">.site-footer</span> {
+    <span class="pp">padding</span>: <span class="nm">40px 20px 24px</span>;
+  }
+  <span class="sl">.footer-grid</span> {
+    <span class="pp">grid-template-columns</span>: 1fr 1fr;
+  }
+  <span class="sl">.footer-brand</span> {
+    <span class="pp">grid-column</span>: <span class="nm">1 / -1</span>;
+    <span class="cm">/* Full width */</span>
+  }
+}</pre>
+            </div>
+          </div>
+        </div>
+
+        <div
+          style="
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 20px 0;
+          "
+        >
+          <div class="explain-row">
+            <div class="tag-col" style="color: #7ee787">&lt;footer&gt;</div>
+            <div class="info-col">
+              <strong>Semantic Tag</strong>
+              <p>
+                Sirf &lt;div&gt; ki jagah &lt;footer&gt; use karna SEO aur
+                screen readers ke liye best practice hai. Google samajhta hai ye
+                page ka end section hai.
+              </p>
+            </div>
+          </div>
+          <div class="explain-row">
+            <div class="tag-col" style="color: #7ee787">&lt;address&gt;</div>
+            <div class="info-col">
+              <strong>Contact Info Tag</strong>
+              <p>
+                Google is tag ke andar ka content contact information maanta hai
+                — local SEO mein help karta hai. Email, phone, address — sab
+                &lt;address&gt; mein dalein.
+              </p>
+            </div>
+          </div>
+          <div class="explain-row">
+            <div class="tag-col" style="color: #7ee787">href="mailto:"</div>
+            <div class="info-col">
+              <strong>Email Link</strong>
+              <p>
+                Click karne par seedha email app (Gmail, Outlook) khulta hai
+                pre-filled to address ke saath. Mobile users ke liye bahut
+                convenient.
+              </p>
+            </div>
+          </div>
+          <div class="explain-row">
+            <div class="tag-col" style="color: #7ee787">href="tel:"</div>
+            <div class="info-col">
+              <strong>Phone Link</strong>
+              <p>
+                Mobile users is link par click karein to seedha call dial ho
+                jaata hai. Ye business ke liye bahut zaroori conversion feature
+                hai.
+              </p>
+            </div>
+          </div>
+          <div class="explain-row">
+            <div class="tag-col" style="color: #7ee787">&amp;copy;</div>
+            <div class="info-col">
+              <strong>HTML Entity</strong>
+              <p>
+                Special characters jo directly keyboard se nahi type ho sakte.
+                &amp;copy; = ©, &amp;amp; = &, &amp;nbsp; = space, &amp;lt; =
+                &lt;, &amp;gt; = &gt;
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <!-- /main -->
+
+    <script>
+      // Sidebar active state on scroll
+      const sections = document.querySelectorAll("section[id]");
+      const navLinks = document.querySelectorAll(".nav-item");
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              navLinks.forEach((link) => {
+                link.classList.toggle(
+                  "active",
+                  link.getAttribute("href") === "#" + entry.target.id,
+                );
+              });
+            }
+          });
+        },
+        { threshold: 0.3 },
+      );
+      sections.forEach((s) => observer.observe(s));
+    </script>
+  </body>
+</html>
