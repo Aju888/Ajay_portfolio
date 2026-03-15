@@ -23,3 +23,5 @@ Haan — Google Fonts load hone ke liye internet chahiye.
 1. netlify.com par free account banao
 2. Poora `website-deep-guide` folder drag & drop karo
 3. Link milega: https://yourname.netlify.app ✅
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/2033948a-74b2-42dc-880a-96f6eeb6a6d7/deploy-status)](https://app.netlify.com/projects/understandhtml/deploys)
